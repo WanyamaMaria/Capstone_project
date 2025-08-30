@@ -23,6 +23,11 @@ public function store(Request $request) {
     $request->validate([
         'name' => 'required',
         'location' => 'required',
+        'description' => 'required',
+        'partnerOrganization' => 'required',
+        'facilityType' => 'required',
+        'capabilities' => 'required',   
+
     ]);
     Facility::create($request->all());
     return redirect()->route('facilities.index');

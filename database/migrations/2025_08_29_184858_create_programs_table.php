@@ -11,10 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('programs', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+       Schema::create('programs', function (Blueprint $table) {
+        $table->id();
+        $table->string('program_id')->unique()->after('id');
+        $table->string('name');
+        $table->text('description')->nullable();
+        $table->string('national_alignment')->nullable();
+        $table->string('focus_areas')->nullable();
+        $table->string('phases')->nullable();
+        $table->timestamps();
+});
+
     }
 
     /**
