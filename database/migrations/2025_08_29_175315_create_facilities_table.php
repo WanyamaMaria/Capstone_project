@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('facilityType')->nullable();
             $table->string('capabilities')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
     }

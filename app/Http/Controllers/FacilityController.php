@@ -8,66 +8,84 @@ use Illuminate\Http\Request;
 class FacilityController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the facilities.
      */
-  public function index() {
-    $facilities = Facility::all();
-    return view('facilities.index', compact('facilities'));
-}
-
-public function create() {
-    return view('facilities.create');
-}
-
-public function store(Request $request) {
-    $request->validate([
-        'name' => 'required',
-        'location' => 'required',
-        'description' => 'required',
-        'partnerOrganization' => 'required',
-        'facilityType' => 'required',
-        'capabilities' => 'required',   
-
-    ]);
-    Facility::create($request->all());
-    return redirect()->route('facilities.index');
-}
-
+    public function index()
+    {
+        $facilities = Facility::all();
+        return view('facilities.index', compact('facilities'));
+    }
 
     /**
-     * Store a newly created resource in storage.
+     * Show the form for creating a new facility.
      */
-   
+    public function create()
+    {
+        return view('facilities.create');
+    }
 
     /**
-     * Display the specified resource.
+     * Store a newly created facility in storage.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+
+            'name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'partnerOrganization' => 'nullable|string',
+            'facilityType' => 'nullable|string',
+            'capabilities' => 'nullable|string',
+        ]);
+
+        Facility::create($validated);
+
+        return redirect()->route('facilities.index')->with('success', 'Facility created successfully.');
+    }
+
+    /**
+     * Display the specified facility.
      */
     public function show(Facility $facility)
     {
-        //
+        return view('facilities.show', compact('facility'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified facility.
      */
     public function edit(Facility $facility)
     {
-        //
+        return view('facilities.edit', compact('facility'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified facility in storage.
      */
     public function update(Request $request, Facility $facility)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'partnerOrganization' => 'nullable|string',
+            'facilityType' => 'nullable|string',
+            'capabilities' => 'nullable|array',
+        ]);
+
+        $facility->update($validated);
+
+        return redirect()->route('facilities.index')->with('success', 'Facility updated successfully.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified facility from storage.
      */
     public function destroy(Facility $facility)
     {
-        //
+        $facility->delete();
+
+        return redirect()->route('facilities.index')->with('success', 'Facility deleted successfully.');
     }
 }
