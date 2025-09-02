@@ -10,11 +10,47 @@ class FacilityController extends Controller
     /**
      * Display a listing of the facilities.
      */
-    public function index()
-    {
-        $facilities = Facility::all();
-        return view('facilities.index', compact('facilities'));
+    // public function index()
+    // {
+    //     $facilities = Facility::all();
+    //     return view('facilities.index', compact('facilities'));
+    // }
+public function index(Request $request)
+{
+    $query = Facility::query();
+
+    // Search by name or location
+    if ($request->filled('search')) {
+        $query->where(function ($q) use ($request) {
+            $q->where('name', 'like', '%' . $request->search . '%')
+              ->orWhere('location', 'like', '%' . $request->search . '%');
+        });
     }
+
+    // Filter by facility type
+    if ($request->filled('facilityType')) {
+        $query->where('facilityType', $request->facilityType);
+    }
+
+    // Filter by partner
+    if ($request->filled('partnerOrganization')) {
+        $query->where('partnerOrganization', $request->partnerOrganization);
+    }
+
+    // Filter by capability (assuming capabilities stored as plain string or JSON)
+    if ($request->filled('capability')) {
+        $query->where('capabilities', 'like', '%' . $request->capability . '%');
+    }
+
+    $facilities = $query->latest()->paginate(10);
+
+    // Pass filter options to view
+    $facilityTypes = Facility::select('facilityType')->distinct()->pluck('facilityType');
+    $partners = Facility::select('partnerOrganization')->distinct()->pluck('partnerOrganization');
+    $capabilities = Facility::select('capabilities')->distinct()->pluck('capabilities');
+
+    return view('facilities.index', compact('facilities', 'facilityTypes', 'partners', 'capabilities'));
+}
 
     /**
      * Show the form for creating a new facility.
