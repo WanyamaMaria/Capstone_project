@@ -23,7 +23,7 @@
     </nav>
 
     <main class="container mx-auto mt-6">
-        <h1 class="text-2xl font-bold mb-4">Welcome to the Dashboard</h1>
+        <h1 class="text-2xl font-bold mb-4">Welcome to Capstone.</h1>
         <p class="text-gray-700">This is the main dashboard where you can navigate to different sections of the platform.</p>
         <div class="grid grid-cols-3 gap-4 mt-6">
             <a href="{{ route('programs.index') }}" class="bg-white shadow rounded p-4 text-center">
