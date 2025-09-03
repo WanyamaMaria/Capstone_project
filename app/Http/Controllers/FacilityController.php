@@ -142,4 +142,19 @@ public function store(Request $request) {
         return redirect()->route('facilities.index')
             ->with('success', 'Facility deleted successfully.');
     }
+
+    /**
+     * Get facilities for AJAX requests (for dropdowns in other forms)
+     */
+    public function ajax(Request $request)
+    {
+        $facilities = Facility::select('facility_id', 'name', 'location')
+                             ->when($request->search, function($query, $search) {
+                                 $query->search($search);
+                             })
+                             ->limit(10)
+                             ->get();
+
+        return response()->json($facilities);
+    }
 }
