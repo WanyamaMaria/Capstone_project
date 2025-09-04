@@ -70,10 +70,10 @@ public function store(Request $request)
     $request->validate([
         'name' => 'required|string|max:255',
         'location' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'partnerOrganization' => 'nullable|string|max:255',
-        'facilityType' => 'nullable|string|max:255',
-        'capabilities' => 'nullable|string|max:255',
+        'description' => 'required|nullable|string',
+        'partnerOrganization' => 'required|nullable|string|max:255',
+        'facilityType' => 'required|nullable|string|max:255',
+        'capabilities' => 'required|nullable|string|max:255',
     ]);
 
     // Generate unique facility_id (consider soft-deleted)
@@ -114,21 +114,30 @@ public function store(Request $request)
     /**
      * Update the specified facility in storage.
      */
-    public function update(Request $request, Facility $facility)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'partnerOrganization' => 'nullable|string',
-            'facilityType' => 'nullable|string',
-            'capabilities' => 'nullable|array',
-        ]);
+   public function update(Request $request, Facility $facility)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'location' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'partnerOrganization' => 'nullable|string|max:255',
+        'facilityType' => 'nullable|string|max:255',
+        'capabilities' => 'nullable|string',
+    ]);
 
-        $facility->update($validated);
+    $facility->update([
+        'name' => $request->name,
+        'location' => $request->location,
+        'description' => $request->description,
+        'partnerOrganization' => $request->partnerOrganization,
+        'facilityType' => $request->facilityType,
+        'capabilities' => $request->capabilities,
+    ]);
 
-        return redirect()->route('facilities.index')->with('success', 'Facility updated successfully.');
-    }
+    return redirect()->route('facilities.index')
+                     ->with('success', 'Facility updated successfully!');
+}
+
 
     /**
      * Remove the specified facility from storage.

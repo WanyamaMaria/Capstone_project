@@ -1,6 +1,23 @@
 @extends('layouts.app')
 @section('title', 'Facilities')
 @section('content')
+@if(session('success'))
+    <div id="success-message" class="   color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 6px;
+    padding: 12px 18px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-align: center;
+    opacity: 1;
+    display: inline-block;
+    max-width: 90%;
+    width: 100%;
+    transition: opacity 0.7s;">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="flex justify-between items-center mb-4">
     <h1 class="text-xl font-bold">Facilities</h1>
     <a href="{{ route('facilities.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded">Add Facility</a>

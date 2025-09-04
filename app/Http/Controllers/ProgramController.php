@@ -32,10 +32,10 @@ class ProgramController extends Controller
     {
         $request->validate([
             'name'                => 'required|string|max:255',
-            'description'         => 'nullable|string',
-            'national_alignment'  => 'nullable|string|max:255',
-            'focus_areas'         => 'nullable|string|max:255',
-            'phases'              => 'nullable|string|max:255',
+            'description'         => 'required|nullable|string',
+            'national_alignment'  => 'required|nullable|string|max:255',
+            'focus_areas'         => 'required|nullable|string|max:255',
+            'phases'              => 'required|nullable|string|max:255',
         ]);
          $lastProgram= Program::withTrashed()->latest('id')->first();
          $newNumber = $lastProgram ? $lastProgram->id + 1 : 1;
