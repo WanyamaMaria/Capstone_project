@@ -2,26 +2,17 @@
 @section('title', 'Programs')
 
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 @if(session('success'))
-    <div id="success-message" class="   color: #155724;
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    border-radius: 6px;
-    padding: 12px 18px;
-    margin-bottom: 15px;
-    font-weight: bold;
-    text-align: center;
-    opacity: 1;
-    display: inline-block;
-    max-width: 90%;
-    width: 100%;
-    transition: opacity 0.7s;">
+    <div id="success-message" class="success-message">
         {{ session('success') }}
     </div>
 @endif
 <div class="flex justify-between mb-4">
     <h1 class="text-xl font-bold">Programs</h1>
-    <a href="{{ route('programs.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded">Add Program</a>
+     <a href="{{ route('programs.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded inline-flex items-center gap-2">
+        <i class="fa-solid fa-plus"></i> Add Program
+    </a>
 </div>
 
 <table class="w-full bg-white shadow rounded">

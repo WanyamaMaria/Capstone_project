@@ -19,38 +19,42 @@ public function index(Request $request)
 {
     $query = Facility::query();
 
-    // Search by name or location
-    if ($request->filled('search')) {
-        $query->where(function ($q) use ($request) {
-            $q->where('name', 'like', '%' . $request->search . '%')
-              ->orWhere('location', 'like', '%' . $request->search . '%');
+    // 🔍 Full-text search across multiple fields
+    if ($search = trim((string) $request->get('search'))) {
+        $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+              ->orWhere('location', 'like', "%{$search}%")
+              ->orWhere('partnerOrganization', 'like', "%{$search}%")
+              ->orWhere('facilityType', 'like', "%{$search}%")
+              ->orWhere('capabilities', 'like', "%{$search}%");
         });
     }
 
-    // Filter by facility type
-    if ($request->filled('facilityType')) {
-        $query->where('facilityType', $request->facilityType);
+    // 🎯 Dropdown filters (still supported)
+    if ($type = $request->get('facilityType')) {
+        $query->where('facilityType', $type);
     }
 
-    // Filter by partner
-    if ($request->filled('partnerOrganization')) {
-        $query->where('partnerOrganization', $request->partnerOrganization);
+    if ($partner = $request->get('partnerOrganization')) {
+        $query->where('partnerOrganization', $partner);
     }
 
-    // Filter by capability (assuming capabilities stored as plain string or JSON)
-    if ($request->filled('capability')) {
-        $query->where('capabilities', 'like', '%' . $request->capability . '%');
-    }
+   if ($cap = $request->get('capability')) {
+    $query->where('capabilities', 'like', "%{$cap}%");
+}
 
-    $facilities = $query->latest()->paginate(10);
 
-    // Pass filter options to view
-    $facilityTypes = Facility::select('facilityType')->distinct()->pluck('facilityType');
-    $partners = Facility::select('partnerOrganization')->distinct()->pluck('partnerOrganization');
-    $capabilities = Facility::select('capabilities')->distinct()->pluck('capabilities');
+    $facilities = $query->orderBy('name')->paginate(10)->withQueryString();
+
+    $facilityTypes = Facility::whereNotNull('facilityType')->distinct()->pluck('facilityType');
+    $partners      = Facility::whereNotNull('partnerOrganization')->distinct()->pluck('partnerOrganization');
+    $capabilities  = Facility::whereNotNull('capabilities')->pluck('capabilities')
+        ->flatMap(fn($c) => is_array($c) ? $c : preg_split('/\s*[,;]\s*/', (string) $c, -1, PREG_SPLIT_NO_EMPTY))
+        ->unique()->values();
 
     return view('facilities.index', compact('facilities', 'facilityTypes', 'partners', 'capabilities'));
 }
+
 
     /**
      * Show the form for creating a new facility.

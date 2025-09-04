@@ -1,52 +1,67 @@
-
-
 @extends('layouts.app')
 
 @section('title', 'Create Program')
 
 @section('content')
-<div class="max-w-2xl mx-auto bg-white shadow-md rounded p-6">
-    <h1 class="text-xl font-bold mb-4">Create a New Program</h1>
-    <form action="{{ route('programs.store') }}" method="POST">
+<link rel="stylesheet" href="{{ asset('css/messages.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<div class="container">
+    @if(session('success'))
+        <div id="success-message" class="success-message">
+            <i class="fas fa-check-circle"></i> {{ session('success') }}
+        </div>
+    @endif
+
+    <h2> Program Registration Form</h2>
+
+    <form method="POST" action="{{ route('programs.store') }}">
         @csrf
-       
-        <div class="mb-4">
-            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-            <input type="text" name="name" id="name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+
+        <div class="form-section">
+            <label><i class="fas fa-tag"></i> Program Name</label>
+            <input type="text" name="name" value="{{ old('name') }}" required>
+            @error('name') <div class="error">{{ $message }}</div> @enderror
+
+            <label><i class="fas fa-align-left"></i> Description</label>
+            <input type="text" name="description" value="{{ old('description') }}" required>
+            @error('description') <div class="error">{{ $message }}</div> @enderror
         </div>
-        <div class="mb-4">
-            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-            <input type="text" name="description" id="description" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+
+        <div class="form-section">
+            <label><i class="fas fa-flag"></i> National Alignment</label>
+            <textarea name="national_alignment" rows="4">{{ old('national_alignment') }}</textarea>
+            @error('national_alignment') <div class="error">{{ $message }}</div> @enderror
+
+            <label><i class="fas fa-layer-group"></i> Phases</label>
+            <input type="text" name="phases" value="{{ old('phases') }}">
+            @error('phases') <div class="error">{{ $message }}</div> @enderror
         </div>
-        <div class="mb-4">
-            <label for="national_alignment" class="block text-sm font-medium text-gray-700">NationalAlignment</label>
-            <textarea name="national_alignment" id="national_alignment" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
+
+        <div class="form-section">
+            <label><i class="fas fa-bullseye"></i> Focus Areas</label>
+            <input type="text" name="focus_areas" value="{{ old('focus_areas') }}">
+            @error('focus_areas') <div class="error">{{ $message }}</div> @enderror
         </div>
-        <div class="mb-4">
-            <label for="phases" class="block text-sm font-medium text-gray-700">Phases</label>
-            <input type="text" name="phases" id="phases" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-        </div>
-        <div class="mb-4">
-            <label for="focus_ares" class="block text-sm font-medium text-gray-700">FocusAreas</label>
-            <input type="text" name="focus_areas" id="focus_areas" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-        </div>
-       
-        <div class="flex justify-end gap-2">
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Create Program</button>
-            <a href="{{ route('programs.index') }}" class="bg-gray-400 text-white px-4 py-2 rounded">Cancel</a>
-        </div>
+
+        <button type="submit" class="submit-btn">
+            Create Program
+        </button>
+        <a href="{{ route('programs.index') }}" class="cancel-btn">
+            Cancel
+        </a>
     </form>
 </div>
 
 <script>
-    // Wait 4 seconds, then fade out the message
+    // Auto-hide flash messages
     setTimeout(() => {
         const flash = document.getElementById('success-message');
         if (flash) {
             flash.style.transition = 'opacity 0.5s ease';
             flash.style.opacity = '0';
-            setTimeout(() => flash.remove(), 500); // Remove from DOM after fade
+            setTimeout(() => flash.remove(), 500);
         }
-    }, 4000); // 4 seconds
+    }, 4000);
 </script>
 @endsection
