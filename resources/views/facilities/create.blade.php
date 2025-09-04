@@ -1,5 +1,3 @@
-
-
 @extends('layouts.app')
 
 @section('title', 'Create Facility')
@@ -9,7 +7,6 @@
     <h1 class="text-xl font-bold mb-4">Create a New Facility</h1>
     <form action="{{ route('facilities.store') }}" method="POST">
         @csrf
-       
         <div class="mb-4">
             <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
             <input type="text" name="name" id="name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
@@ -34,8 +31,9 @@
             <label for="capabilities" class="block text-sm font-medium text-gray-700">Capabilities</label>
             <textarea name="capabilities" id="capabilities" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
         </div>
-        <div class="flex justify-end">
+        <div class="flex justify-end gap-2">
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Create Facility</button>
+            <a href="{{ route('facilities.index') }}" class="bg-gray-400 text-white px-4 py-2 rounded">Cancel</a>
         </div>
     </form>
 </div>

@@ -1,0 +1,51 @@
+/* facility-form.css */
+
+/* Wrapper for icon + input */
+.input-icon {
+    position: relative;
+}
+
+.input-icon svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+}
+
+.input-icon input,
+.input-icon textarea {
+    padding-left: 40px; /* leave space for icon */
+}
+
+/* Hover & focus effects */
+.input-icon input:focus,
+.input-icon textarea:focus {
+    border-color: #3b82f6; /* Tailwind blue-500 */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    outline: none;
+}
+
+/* Colors for each icon wrapper */
+.input-icon.name svg { color: #3b82f6; } /* blue */
+.input-icon.location svg { color: #10b981; } /* green */
+.input-icon.description svg { color: #facc15; } /* yellow */
+.input-icon.partner svg { color: #8b5cf6; } /* purple */
+.input-icon.type svg { color: #ef4444; } /* red */
+.input-icon.capabilities svg { color: #6366f1; } /* indigo */
+
+/* Rounded inputs */
+.input-icon input,
+.input-icon textarea {
+    border-radius: 0.75rem; /* rounded-xl */
+    border: 1px solid #d1d5db; /* gray-300 */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Textarea height */
+.input-icon textarea {
+    min-height: 4rem;
+}

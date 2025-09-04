@@ -37,8 +37,21 @@ class ProgramController extends Controller
             'focus_areas'         => 'nullable|string|max:255',
             'phases'              => 'nullable|string|max:255',
         ]);
+         $lastProgram= Program::withTrashed()->latest('id')->first();
+         $newNumber = $lastProgram ? $lastProgram->id + 1 : 1;
+         $programId = 'P-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
 
-        Program::create($request->all());
+
+        
+        $program = Program::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'national_alignment' => $request->national_alignment,
+            'focus_areas' => $request->focus_areas,
+            'phases' => $request->phases,
+            'program_id' => $programId,
+        
+    ]);
 
         return redirect()->route('programs.index')
                          ->with('success', 'Program created successfully.');

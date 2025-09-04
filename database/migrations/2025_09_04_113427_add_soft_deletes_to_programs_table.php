@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('facilities', function (Blueprint $table) {
-            $table->string('facility_id')->unique()->after('id');
+        Schema::table('programs', function (Blueprint $table) {
+            $table->softDeletes(); // Adds the `deleted_at` column
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('facilities', function (Blueprint $table) {
-            $table->dropColumn('facility_id');
+        Schema::table('programs', function (Blueprint $table) {
+            $table->dropSoftDeletes(); // Removes the `deleted_at` column
         });
     }
 };

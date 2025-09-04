@@ -13,30 +13,38 @@ class Facility extends Model
     protected $fillable = [
         'name',
         'location',
-        'description',
         'facility_id',
+        'description',
         'partnerOrganization',
         'facilityType',
         'capabilities',
     ];
 
-    // protected $casts = [
-    //     'capabilities' => 'array',
-    // ];
+     // Relationships
+    public function services()
+    {
+        return $this->hasMany(Service::class);
+    }
+
+    public function equipment()
+    {
+        return $this->hasMany(Equipment::class);
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
 
 
 
-
-    protected static function boot()
+protected static function booted()
 {
-    parent::boot();
-
-    static::creating(function ($facility) {
-        // Generate next number based on last facility_id
-        $lastFacility = Facility::orderBy('id', 'desc')->first();
-        $nextNumber = $lastFacility ? ((int) str_replace('FAC-', '', $lastFacility->facility_id)) + 1 : 1;
-
-        $facility->facility_id = 'FAC-' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+    static::created(function ($facility) {
+        if (!$facility->facility_id) {
+            $facility->facility_id = 'FAC-' . str_pad($facility->id, 4, '0', STR_PAD_LEFT);
+            $facility->saveQuietly(); // prevents recursion
+        }
     });
 }
 

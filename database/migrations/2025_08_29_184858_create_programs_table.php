@@ -13,7 +13,7 @@ return new class extends Migration
     {
        Schema::create('programs', function (Blueprint $table) {
         $table->id();
-        $table->string('program_id')->unique()->after('id');
+        $table->string('program_id')->unique();
         $table->string('name');
         $table->text('description')->nullable();
         $table->string('national_alignment')->nullable();

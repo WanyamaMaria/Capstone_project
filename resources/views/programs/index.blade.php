@@ -14,6 +14,7 @@
             <th class="px-4 py-2">NationalAlignment</th>
             <th class="px-4 py-2">Phases</th>
             <th class="px-4 py-2">FocusAreas</th>
+            <th class="px-4 py-2">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -22,6 +23,8 @@
             <td class="px-4 py-2">{{ $program->name }}</td>
             <td class="px-4 py-2">{{ $program->description }}</td>
             <td class="px-4 py-2">{{ $program->national_alignment }}</td>
+            <td class="px-4 py-2">{{ $program->phases }}</td>
+            <td class="px-4 py-2">{{ $program->focus_areas }}</td>
             <td class="px-4 py-2 flex gap-2">
                 <a href="{{ route('programs.edit', $program) }}" class="text-blue-500">Edit</a>
                 <form action="{{ route('programs.destroy', $program) }}" method="POST">

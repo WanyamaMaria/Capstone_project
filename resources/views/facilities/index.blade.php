@@ -58,7 +58,7 @@
             <th class="px-4 py-2">PartnerOrganization</th>
             <th class="px-4 py-2">FacilityType</th>
             <th class="px-4 py-2">Capabilities</th>
-            <th class="px-4 py-2">Facility ID</th>
+    
             <th class="px-4 py-2">Actions</th>
 
 
@@ -73,7 +73,7 @@
             <td class="px-4 py-2">{{$facility->partnerOrganization}}</td>
             <td class="px-4 py-2">{{ $facility->facilityType }}</td> 
            <td class="px-4 py-2">{{ $facility->capabilities }} </td>
-            <td class="px-4 py-2">{{ $facility->facility_id }}</td>
+            
             <td class="px-4 py-2 flex gap-2">
                 <a href="{{ route('facilities.edit', $facility) }}" class="text-blue-500">Edit</a>
                 <form action="{{ route('facilities.destroy', $facility) }}" method="POST">
@@ -85,4 +85,16 @@
         @endforeach
     </tbody>
 </table>
+
+<script>
+    // Wait 4 seconds, then fade out the message
+    setTimeout(() => {
+        const flash = document.getElementById('success-message');
+        if (flash) {
+            flash.style.transition = 'opacity 0.5s ease';
+            flash.style.opacity = '0';
+            setTimeout(() => flash.remove(), 500); // Remove from DOM after fade
+        }
+    }, 4000); // 4 seconds
+</script>
 @endsection

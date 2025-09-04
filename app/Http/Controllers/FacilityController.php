@@ -63,22 +63,37 @@ public function index(Request $request)
     /**
      * Store a newly created facility in storage.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
+ 
 
-            'name' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'partnerOrganization' => 'nullable|string',
-            'facilityType' => 'nullable|string',
-            'capabilities' => 'nullable|string',
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'location' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'partnerOrganization' => 'nullable|string|max:255',
+        'facilityType' => 'nullable|string|max:255',
+        'capabilities' => 'nullable|string|max:255',
+    ]);
 
-        Facility::create($validated);
+    // Generate unique facility_id (consider soft-deleted)
+    $lastFacility = Facility::withTrashed()->latest('id')->first();
+    $newNumber = $lastFacility ? $lastFacility->id + 1 : 1;
+    $facilityId = 'FAC-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
 
-        return redirect()->route('facilities.index')->with('success', 'Facility created successfully.');
-    }
+    $facility = Facility::create([
+        'name' => $request->name,
+        'location' => $request->location,
+        'description' => $request->description,
+        'partnerOrganization' => $request->partnerOrganization,
+        'facilityType' => $request->facilityType,
+        'capabilities' => $request->capabilities,
+        'facility_id' => $facilityId,
+    ]);
+
+    return redirect()->route('facilities.index')
+                     ->with('success', 'Facility created successfully.');
+}
 
     /**
      * Display the specified facility.
