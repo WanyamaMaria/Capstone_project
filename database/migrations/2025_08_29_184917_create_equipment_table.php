@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('equipment', function (Blueprint $table) {
-            $table->id(); // Primary key
-            $table->string('equipmentId')->unique(); // Custom equipment identifier
+            $table->string('equipmentId')->primary(); // Custom primary key
             $table->foreignId('facility_id')->constrained()->onDelete('cascade'); // Facility relationship
             $table->string('name'); // Equipment name
             $table->text('description')->nullable(); // Overview

@@ -61,9 +61,9 @@ class EquipmentController extends Controller
             'supportPhase' => 'nullable|string|max:255',
         ]);
 
-        $lastItem = Equipment::withTrashed()->latest('id')->first();
-        $newNumber = $lastItem ? $lastItem->id + 1 : 1;
-        $equipmentId = 'EQP-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+        $lastItem = Equipment::withTrashed()->latest('equipmentId')->first();
+        $lastNumber = $lastItem ? intval(substr($lastItem->equipmentId, 4)) : 0;
+        $equipmentId = 'EQP-' . str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
 
         Equipment::create([
             'equipmentId' => $equipmentId,
