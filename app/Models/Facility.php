@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Facility extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $primaryKey = 'facility_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'name',

@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Program extends Model
 {
       use HasFactory,SoftDeletes;
+    protected $primaryKey = 'program_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
     'name',

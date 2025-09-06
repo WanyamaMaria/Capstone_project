@@ -104,7 +104,11 @@ public function store(Request $request)
      */
     public function show(Facility $facility)
     {
-        return view('facilities.show', compact('facility'));
+        $services = $facility->services; // Fetch services linked to the facility
+        $equipment = $facility->equipment; // Fetch equipment linked to the facility
+        $projects = $facility->projects; // Fetch projects linked to the facility
+
+        return view('facilities.show', compact('facility', 'services', 'equipment', 'projects'));
     }
 
     /**

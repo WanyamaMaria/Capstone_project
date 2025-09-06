@@ -84,7 +84,11 @@
     <tbody>
         @forelse($facilities as $facility)
             <tr class="border-b">
-                <td class="px-4 py-2">{{ $facility->name }}</td>
+                <td class="px-4 py-2">
+                    <a href="{{ route('facilities.show', $facility) }}" class="text-blue-600 hover:underline">
+                        {{ $facility->name }}
+                    </a>
+                </td>
                 <td class="px-4 py-2">{{ $facility->location }}</td>
                 <td class="px-4 py-2">{{ $facility->partnerOrganization }}</td>
                 <td class="px-4 py-2">{{ $facility->facilityType }}</td>
