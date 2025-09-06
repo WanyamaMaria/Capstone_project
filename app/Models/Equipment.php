@@ -10,6 +10,11 @@ class Equipment extends Model
 {
     use HasFactory, SoftDeletes;
 
+    // Use equipmentId as the primary key
+    protected $primaryKey = 'equipmentId';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = [
         'equipmentId',
         'facility_id',
@@ -28,10 +33,17 @@ class Equipment extends Model
 
     protected static function booted()
     {
-        static::created(function ($equipment) {
+        static::creating(function ($equipment) {
             if (!$equipment->equipmentId) {
-                $equipment->equipmentId = 'EQP-' . str_pad($equipment->id, 4, '0', STR_PAD_LEFT);
-                $equipment->saveQuietly();
+                $lastItem = Equipment::withTrashed()
+                    ->orderByDesc('equipmentId')
+                    ->first();
+
+                $newNumber = $lastItem
+                    ? intval(substr($lastItem->equipmentId, 4)) + 1
+                    : 1;
+
+                $equipment->equipmentId = 'EQP-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
             }
         });
     }
