@@ -7,6 +7,7 @@
         @yield('title', 'Dashboard')
     </title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/messages.css') }}">
 </head>
 <body class="bg-gray-100 text-gray-900">
     <nav class="bg-blue-700 text-white shadow-md px-6 py-4 flex justify-between">

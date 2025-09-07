@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('facilities', function (Blueprint $table) {
             $table->id();
+            $table->string('facility_id')->unique();
             $table->string('name');
             $table->string('location');
             $table->text('description')->nullable();
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->string('facilityType')->nullable();
             $table->string('capabilities')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
     }

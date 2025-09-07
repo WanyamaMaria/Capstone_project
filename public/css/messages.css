@@ -1,0 +1,230 @@
+#success-message {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 6px;
+    padding: 12px 18px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-align: center;
+    opacity: 1;
+    display: inline-block;
+    max-width: 90%;
+    width: 100%;
+    transition: opacity 0.7s;
+}
+
+
+/* public/css/messages.css */
+.success-message {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 6px;
+    padding: 12px 18px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-align: center;
+    opacity: 1;
+    display: inline-block;
+    max-width: 90%;
+    width: 100%;
+    transition: opacity 0.7s;
+}
+
+.error-message {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+    padding: 12px 18px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-align: center;
+    opacity: 1;
+    display: inline-block;
+    max-width: 90%;
+    width: fit-content;
+    transition: opacity 0.7s;
+}
+
+
+  table {
+            border-collapse: collapse;
+            width: 100%;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+        }
+        th, td {
+            border: 1px solid #bdbdbd;
+            padding: 10px 16px;
+            text-align: center;
+            text-wrap: nowrap;
+        }
+        th {
+            background-color: #e0e0e0;
+        }
+        tr:nth-child(even) {
+            background-color: rgb(252, 249, 249);
+        }
+        h2 {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-weight: bold;;
+        }
+
+
+
+
+
+
+
+
+
+        
+
+        * {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f1f5f9;
+    padding: 20px;
+    margin: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #05223e;
+    font-weight: 700;
+    font-size: 28px;
+}
+
+h3 {
+    margin-top: 40px;
+    color: #34495e;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+label {
+    font-weight: 600;
+    margin-top: 20px;
+    display: block;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dcdfe3;
+    border-radius: 8px;
+    margin-top: 5px;
+    background: #f9fafb;
+}
+
+.checkbox-group label,
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+}
+
+.success {
+    background: #e0f7ea;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.error {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.submit-btn {
+    margin-top: 30px;
+    padding: 14px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 30%;
+    position: centre;
+    transition: 0.3s;
+}
+
+.submit {
+    margin-top: 30px;
+    padding: 14px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 20%;
+    transition: 0.3s;
+}
+
+.cancel-btn {
+    margin-top: 30px;
+    padding: 14px;
+    background-color:red;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 30%;
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #2980b9;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+
+    input, button {
+        font-size: 16px;
+    }
+}
+
+
+.logout-btn2 {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #f44336;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+.logout-btn:hover {
+    background-color: #d32f2f;
+}
+.logout-btn i {
+    margin-left: 8px;
+}
