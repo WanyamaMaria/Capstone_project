@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Service;
+use App\Models\Facility;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
@@ -12,7 +13,8 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        //
+        $services = Service::with('facility')->paginate(10);
+        return view('services.index', compact('services'));
     }
 
     /**
@@ -20,7 +22,8 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        //
+        $facilities = Facility::all();
+        return view('services.create', compact('facilities'));
     }
 
     /**
@@ -28,7 +31,15 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'facility_id' => 'required|exists:facilities,id',
+        ]);
+
+        Service::create($validated);
+
+        return redirect()->route('services.index')->with('success', 'Service created successfully.');
     }
 
     /**
@@ -36,7 +47,8 @@ class ServiceController extends Controller
      */
     public function show(Service $service)
     {
-        //
+        $service->load('facility');
+        return view('services.show', compact('service'));
     }
 
     /**
@@ -44,7 +56,8 @@ class ServiceController extends Controller
      */
     public function edit(Service $service)
     {
-        //
+        $facilities = Facility::all();
+        return view('services.edit', compact('service', 'facilities'));
     }
 
     /**
@@ -52,7 +65,15 @@ class ServiceController extends Controller
      */
     public function update(Request $request, Service $service)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'facility_id' => 'required|exists:facilities,id',
+        ]);
+
+        $service->update($validated);
+
+        return redirect()->route('services.index')->with('success', 'Service updated successfully.');
     }
 
     /**
@@ -60,6 +81,7 @@ class ServiceController extends Controller
      */
     public function destroy(Service $service)
     {
-        //
+        $service->delete();
+        return redirect()->route('services.index')->with('success', 'Service deleted successfully.');
     }
 }
