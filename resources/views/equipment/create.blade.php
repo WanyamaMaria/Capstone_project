@@ -23,8 +23,9 @@
             <select name="facility_id" required>
                 <option value="">-- Select Facility --</option>
                 @foreach($facilities as $id => $name)
-                    <option value="{{ $id }}" {{ old('facility_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
+                    <option value="{{ $id }}">{{ $name }}</option>
                 @endforeach
+
             </select>
             @error('facility_id') <div class="error">{{ $message }}</div> @enderror
 

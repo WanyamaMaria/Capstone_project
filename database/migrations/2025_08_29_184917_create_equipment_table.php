@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('equipment', function (Blueprint $table) {
             $table->string('equipmentId')->primary(); // Custom primary key
-            $table->foreignId('facility_id')->constrained()->onDelete('cascade'); // Facility relationship
+            $table->string('facility_id'); // Declare the column first
+            $table->foreign('facility_id')->references('facility_id')->on('facilities')->onDelete('cascade');
             $table->string('name'); // Equipment name
             $table->text('description')->nullable(); // Overview
             $table->string('capabilities')->nullable(); // Functional capabilities

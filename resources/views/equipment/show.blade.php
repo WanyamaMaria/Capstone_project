@@ -14,7 +14,10 @@
 
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><strong>Equipment ID:</strong> {{ $equipment->equipmentId }}</li>
-                    <li class="list-group-item"><strong>Facility:</strong> {{ $equipment->facility->name ?? 'N/A' }}</li>
+                    <li class="list-group-item">
+                        <strong>Facility:</strong>
+                        {{ $equipment->facility ? $equipment->facility->name : 'N/A' }}
+                    </li>
                     <li class="list-group-item"><strong>Capabilities:</strong> {{ $equipment->capabilities }}</li>
                     <li class="list-group-item"><strong>Inventory Code:</strong> {{ $equipment->inventoryCode }}</li>
                     <li class="list-group-item"><strong>Usage Domain:</strong> {{ $equipment->usageDomain }}</li>
@@ -23,7 +26,7 @@
 
 
                 <div class="mt-3">
-                    <a href="{{ route('equipment.edit', $equipment->id) }}" class="btn btn-warning">Edit</a>
+                    <a href="{{ route('equipment.edit', $equipment->equipmentId) }}" class="btn btn-warning">Edit</a>
                     <a href="{{ route('equipment.index') }}" class="btn btn-secondary">Back to List</a>
                 </div>
             </div>

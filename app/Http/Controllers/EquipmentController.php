@@ -10,7 +10,9 @@ class EquipmentController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Equipment::query();
+        $query = Equipment::whereHas('facility', function ($q) {
+            $q->whereNull('deleted_at');
+        })->with('facility');
 
         if ($search = trim((string) $request->get('search'))) {
             $query->where(function ($q) use ($search) {
@@ -31,28 +33,37 @@ class EquipmentController extends Controller
         }
 
         if ($facilityId = $request->get('facility_id')) {
-            $query->where('facility_id', $facilityId);
+            $query->whereHas('facility', function ($q) use ($facilityId) {
+                $q->where('facility_id', $facilityId);
+            });
         }
 
         $equipment = $query->orderBy('name')->paginate(10)->withQueryString();
 
         $domains = Equipment::whereNotNull('usageDomain')->distinct()->pluck('usageDomain');
         $phases = Equipment::whereNotNull('supportPhase')->distinct()->pluck('supportPhase');
-        $facilities = Facility::orderBy('name')->pluck('name', 'id');
+        $facilities = Facility::orderBy('name')->pluck('name', 'facility_id');
 
         return view('equipment.index', compact('equipment', 'domains', 'phases', 'facilities'));
     }
 
-    public function create()
+   public function create()
     {
-        $facilities = Facility::orderBy('name')->pluck('name', 'id');
+        $facilities = Facility::pluck('name', 'facility_id');
+
+        if ($facilities->isEmpty()) {
+            return redirect()->route('facilities.create')
+                ->with('warning', 'Please create a facility before adding equipment.');
+        }
+
         return view('equipment.create', compact('facilities'));
     }
+
 
     public function store(Request $request)
     {
         $request->validate([
-            'facility_id' => 'required|exists:facilities,id',
+            'facility_id' => 'required|exists:facilities,facility_id',
             'name' => 'required|string|max:255',
             'capabilities' => 'nullable|string',
             'description' => 'nullable|string',
@@ -81,23 +92,24 @@ class EquipmentController extends Controller
 
     public function show(Equipment $equipment)
     {
+        $equipment->load('facility');
         return view('equipment.show', compact('equipment'));
     }
 
     public function edit(Equipment $equipment)
     {
-        $facilities = Facility::orderBy('name')->pluck('name', 'id');
+        $facilities = Facility::pluck('name', 'facility_id');
         return view('equipment.edit', compact('equipment', 'facilities'));
     }
 
     public function update(Request $request, Equipment $equipment)
     {
         $request->validate([
-            'facility_id' => 'required|exists:facilities,id',
+            'facility_id' => 'required|exists:facilities,facility_id',
             'name' => 'required|string|max:255',
             'capabilities' => 'nullable|string',
             'description' => 'nullable|string',
-            'inventoryCode' => 'nullable|string|max:255|unique:equipment,inventoryCode,' . $equipment->id,
+           'inventoryCode' => 'nullable|string|max:255|unique:equipment,inventoryCode,' . $equipment->equipmentId . ',equipmentId',
             'usageDomain' => 'nullable|string|max:255',
             'supportPhase' => 'nullable|string|max:255',
         ]);

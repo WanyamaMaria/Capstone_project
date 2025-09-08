@@ -28,12 +28,18 @@ class Equipment extends Model
 
     public function facility()
     {
-        return $this->belongsTo(Facility::class);
+        return $this->belongsTo(Facility::class, 'facility_id', 'facility_id');
     }
 
     protected static function booted()
     {
         static::creating(function ($equipment) {
+            // Enforce facility linkage
+            if (!$equipment->facility_id) {
+                throw new \Exception('Equipment must be assigned to a facility.');
+            }
+
+            // Auto-generate equipmentId if missing
             if (!$equipment->equipmentId) {
                 $lastItem = Equipment::withTrashed()
                     ->orderByDesc('equipmentId')
