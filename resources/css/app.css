@@ -1,11 +1,38 @@
-@import 'tailwindcss';
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+/* === Theme Enhancements === */
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+/* Smooth transitions for theme toggling */
+html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode scrollbar styling */
+.dark ::-webkit-scrollbar {
+    width: 8px;
+}
+.dark ::-webkit-scrollbar-track {
+    background: #1f2937; /* Tailwind gray-800 */
+}
+.dark ::-webkit-scrollbar-thumb {
+    background-color: #4b5563; /* Tailwind gray-600 */
+    border-radius: 4px;
+}
+
+/* Optional: Card hover lift effect */
+.card-hover {
+    @apply transition transform duration-200 ease-in-out shadow-sm hover:shadow-md hover:-translate-y-1;
+}
+
+/* Optional: Consistent icon sizing */
+.module-icon {
+    @apply text-2xl mb-2;
+}
+
+/* Optional: Text smoothing */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
