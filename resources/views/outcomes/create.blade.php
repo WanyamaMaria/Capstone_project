@@ -40,7 +40,7 @@
         </div>
         <div class="mb-4">
             <label class="block text-gray-700">Project: 
-                <select name="project_id" class="border p-2 w-full" required>
+                <select name="project_id" class="border p-2 w-full" >
                     @foreach($projects as $project)
                         <option value="{{ $project->id }}">{{ $project->title }}</option>
                     @endforeach

@@ -132,7 +132,93 @@
         <h2 class="text-xl font-bold mb-4 text-gray-900">Equipment Details</h2>
         <div id="quickViewContent" class="space-y-2 text-gray-700 text-sm whitespace-normal break-words"></div>
     </div>
+<<<<<<< Updated upstream
 </div>
+=======
+
+    <!-- Facility Filter -->
+    <select name="facility_id" class="border rounded px-3 py-2" onchange="this.form.submit()">
+        <option value="">All Facilities</option>
+        @foreach ($facilities as $id => $name)
+            <option value="{{ $id }}" {{ request('facility_id') == $id ? 'selected' : '' }}>
+                {{ $name }}
+            </option>
+        @endforeach
+    </select>
+
+    <!-- Usage Domain Filter -->
+    <select name="usageDomain" class="border rounded px-3 py-2" onchange="this.form.submit()">
+        <option value="">All Domains</option>
+        @foreach ($domains as $domain)
+            <option value="{{ $domain }}" {{ request('usageDomain') == $domain ? 'selected' : '' }}>
+                {{ $domain }}
+            </option>
+        @endforeach
+    </select>
+
+    <!-- Support Phase Filter -->
+    <select name="supportPhase" class="border rounded px-3 py-2" onchange="this.form.submit()">
+        <option value="">All Phases</option>
+        @foreach ($phases as $phase)
+            <option value="{{ $phase }}" {{ request('supportPhase') == $phase ? 'selected' : '' }}>
+                {{ $phase }}
+            </option>
+        @endforeach
+    </select>
+
+    <!-- Reset -->
+    <a href="{{ route('equipment.index') }}" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded inline-flex items-center gap-2">
+        <i class="fa-solid fa-rotate-left"></i> Reset
+    </a>
+</form>
+
+<table class="w-full bg-white shadow rounded overflow-hidden">
+    <thead>
+        <tr class="bg-gray-200">
+            <th class="px-4 py-2 text-left">Name</th>
+            <th class="px-4 py-2 text-left">Facility</th>
+            <th class="px-4 py-2 text-left">Domain</th>
+            <th class="px-4 py-2 text-left">Support Phase</th>
+            <th class="px-4 py-2 text-left">Capabilities</th>
+            <th class="px-4 py-2 text-left">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse($equipment as $item)
+            <tr class="border-b">
+                <td class="px-4 py-2">{{ $item->name }}</td>
+                <td class="px-4 py-2">{{ $item->facility->name ?? 'No facility' }}</td>
+                <td class="px-4 py-2">{{ $item->usageDomain }}</td>
+                <td class="px-4 py-2">{{ $item->supportPhase }}</td>
+                <td class="px-4 py-2">{{ $item->capabilities }}</td>
+                <td class="px-4 py-2">
+                    <div class="flex gap-3 items-center">
+                        <a href="{{ route('equipment.edit', $item) }}" class="text-blue-600 hover:underline inline-flex items-center gap-1">
+                            Edit
+                        </a>
+                        <form action="{{ route('equipment.destroy', $item) }}" method="POST" onsubmit="return confirm('Delete this equipment?');">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="text-red-600 hover:underline inline-flex items-center gap-1">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="6" class="px-4 py-6 text-center text-gray-500">No equipment found.</td>
+            </tr>
+        @endforelse
+    </tbody>
+</table>
+
+@if(method_exists($equipment, 'links'))
+    <div class="mt-4">
+        {{ $equipment->links() }}
+    </div>
+@endif
+>>>>>>> Stashed changes
 
 <script>
     function openQuickView(data) {

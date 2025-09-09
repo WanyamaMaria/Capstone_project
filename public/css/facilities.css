@@ -1,51 +1,102 @@
-/* facility-form.css */
+/* ===== Facility Details Styling ===== */
 
-/* Wrapper for icon + input */
-.input-icon {
-    position: relative;
+.facility-card {
+    background: #fff;
+    border-left: 5px solid #2563eb; /* blue accent */
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-bottom: 24px;
 }
 
-.input-icon svg {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
-    pointer-events: none;
+.facility-card h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1d4ed8;
+    margin-bottom: 16px;
 }
 
-.input-icon input,
-.input-icon textarea {
-    padding-left: 40px; /* leave space for icon */
+.facility-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    color: #374151;
 }
 
-/* Hover & focus effects */
-.input-icon input:focus,
-.input-icon textarea:focus {
-    border-color: #3b82f6; /* Tailwind blue-500 */
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-    outline: none;
+.facility-info p i {
+    margin-right: 6px;
 }
 
-/* Colors for each icon wrapper */
-.input-icon.name svg { color: #3b82f6; } /* blue */
-.input-icon.location svg { color: #10b981; } /* green */
-.input-icon.description svg { color: #facc15; } /* yellow */
-.input-icon.partner svg { color: #8b5cf6; } /* purple */
-.input-icon.type svg { color: #ef4444; } /* red */
-.input-icon.capabilities svg { color: #6366f1; } /* indigo */
-
-/* Rounded inputs */
-.input-icon input,
-.input-icon textarea {
-    border-radius: 0.75rem; /* rounded-xl */
-    border: 1px solid #d1d5db; /* gray-300 */
-    width: 100%;
-    box-sizing: border-box;
+/* Section Titles */
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* Textarea height */
-.input-icon textarea {
-    min-height: 4rem;
+.section-title i {
+    font-size: 1.2rem;
+}
+
+/* Cards for linked items */
+.item-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.item-card {
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    border: 1px solid transparent;
+}
+
+.item-card strong {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.item-card p {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Color schemes */
+.item-card.services {
+    background: #ecfdf5;
+    border-color: #bbf7d0;
+}
+
+.item-card.equipment {
+    background: #fefce8;
+    border-color: #fde68a;
+}
+
+.item-card.projects {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+/* Back Button */
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: #2563eb;
+    color: white;
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: background 0.2s ease;
+}
+
+.back-btn:hover {
+    background: #1e40af;
 }

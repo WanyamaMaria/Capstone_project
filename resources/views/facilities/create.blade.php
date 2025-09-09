@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 
-<div class="container">
+<!-- <div class="container"> -->
     @if(session('success'))
         <div id="success-message" class="success-message">
             <i class="fas fa-check-circle"></i> {{ session('success') }}
@@ -56,7 +56,7 @@
            Cancel
         </a>
     </form>
-</div>
+<!-- </div> -->
 
 <script>
     // Auto-hide flash messages

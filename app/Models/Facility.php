@@ -9,9 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Facility extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $primaryKey = 'facility_id';
-    public $incrementing = false;
-    protected $keyType = 'string';
+
+    protected $primaryKey = 'facility_id'; // Custom primary key
+    public $incrementing = false; // Non-incrementing primary key
+    protected $keyType = 'string'; // Primary key is a string
 
     protected $fillable = [
         'name',
@@ -23,32 +24,19 @@ class Facility extends Model
         'capabilities',
     ];
 
-     // Relationships
+    // Relationships
     public function services()
     {
-        return $this->hasMany(Service::class);
+        return $this->hasMany(Service::class, 'facility_id', 'facility_id');
     }
 
     public function equipment()
     {
-        return $this->hasMany(Equipment::class);
+        return $this->hasMany(Equipment::class, 'facility_id', 'facility_id');
     }
 
     public function projects()
     {
-        return $this->hasMany(Project::class);
+        return $this->hasMany(Project::class, 'facility_id', 'facility_id');
     }
-
-
-
-protected static function booted()
-{
-    static::created(function ($facility) {
-        if (!$facility->facility_id) {
-            $facility->facility_id = 'FAC-' . str_pad($facility->id, 4, '0', STR_PAD_LEFT);
-            $facility->saveQuietly(); // prevents recursion
-        }
-    });
-}
-
 }
