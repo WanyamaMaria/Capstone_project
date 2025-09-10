@@ -5,75 +5,72 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\Facility;
 use App\Models\Program;
+use App\Models\Participant;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $projects = Project::with(['facility', 'program'])->paginate(10);
-        return view('projects.index', compact('projects'));
+        $facilities = Facility::all();
+        $programs = Program::all();
+
+        return view('projects.index', compact('projects', 'facilities', 'programs'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $facilities = Facility::all();
         $programs = Program::all();
+
         return view('projects.create', compact('facilities', 'programs'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        
-            $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'description' => 'nullable|string',
-                'facility_id' => 'required|exists:facilities,facilityId',
-                'program_id' => 'required|exists:programs,programId',
-]);
-
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'project_overview' => 'nullable|string',
+            'nature_of_project' => 'required|string',
+            'innovation_focus' => 'nullable|string',
+            'prototype_stage' => 'required|string',
+            'testing_requirements' => 'nullable|string',
+            'commercialization_plan' => 'nullable|string',
+            'facility_id' => 'required|exists:facilities,id',
+            'program_id' => 'required|exists:programs,id',
+        ]);
 
         Project::create($validated);
 
         return redirect()->route('projects.index')->with('success', 'Project created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Project $project)
     {
-        $project->load(['facility', 'program']);
+        $project->load(['facility', 'program', 'participants']);
+
         return view('projects.show', compact('project'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Project $project)
     {
         $facilities = Facility::all();
         $programs = Program::all();
+
         return view('projects.edit', compact('project', 'facilities', 'programs'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Project $project)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'title' => 'required|string|max:255',
+            'project_overview' => 'nullable|string',
+            'nature_of_project' => 'required|string',
+            'innovation_focus' => 'nullable|string',
+            'prototype_stage' => 'required|string',
+            'testing_requirements' => 'nullable|string',
+            'commercialization_plan' => 'nullable|string',
             'facility_id' => 'required|exists:facilities,id',
             'program_id' => 'required|exists:programs,id',
         ]);
@@ -83,12 +80,33 @@ class ProjectController extends Controller
         return redirect()->route('projects.index')->with('success', 'Project updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Project $project)
     {
         $project->delete();
+
         return redirect()->route('projects.index')->with('success', 'Project deleted successfully.');
+    }
+
+    // Custom: Show participant assignment form
+    public function assignParticipants(Project $project)
+    {
+        $participants = Participant::all();
+
+        return view('projects.assign', compact('project', 'participants'));
+    }
+
+    // Custom: Store assigned participants
+    public function storeParticipants(Request $request, Project $project)
+    {
+        $validated = $request->validate([
+            'participant_ids' => 'required|array',
+            'participant_ids.*' => 'exists:participants,id',
+        ]);
+
+        Participant::whereIn('id', $validated['participant_ids'])->update([
+            'project_id' => $project->id,
+        ]);
+
+        return redirect()->route('projects.show', $project)->with('success', 'Participants assigned successfully.');
     }
 }

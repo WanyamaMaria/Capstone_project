@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\ServiceController;
@@ -11,7 +10,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\OutcomeController;
 
-// Home route (dashboard)
+// Dashboard
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index']);
 
@@ -23,3 +22,7 @@ Route::resource('equipment', EquipmentController::class);
 Route::resource('projects', ProjectController::class);
 Route::resource('participants', ParticipantController::class);
 Route::resource('outcomes', OutcomeController::class);
+
+// Custom project routes
+Route::get('projects/{project}/assign', [ProjectController::class, 'assignParticipants'])->name('projects.assign');
+Route::post('projects/{project}/assign', [ProjectController::class, 'storeParticipants'])->name('projects.storeParticipants');
