@@ -67,7 +67,7 @@ public function index(Request $request)
     /**
      * Store a newly created facility in storage.
      */
- 
+
 
 public function store(Request $request)
 {
@@ -81,9 +81,12 @@ public function store(Request $request)
     ]);
 
     // Generate unique facility_id (consider soft-deleted)
-    $lastFacility = Facility::withTrashed()->latest('id')->first();
-    $newNumber = $lastFacility ? $lastFacility->id + 1 : 1;
-    $facilityId = 'FAC-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+    $lastFacility = Facility::orderBy('facility_id', 'desc')->first();
+    $newNumber = $lastFacility
+    ? intval(str_replace('F-', '', $lastFacility->facility_id)) + 1
+    : 1;
+
+$facilityId = 'F-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
 
     $facility = Facility::create([
         'name' => $request->name,

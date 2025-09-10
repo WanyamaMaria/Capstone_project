@@ -9,18 +9,23 @@ class Outcome extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'OutcomeId';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = [
-        'project_id',
-        'title',
-        'description',
-        'artifact_link',
-        'outcome_type',
-        'quality_certification',
-        'commercialization_status',
+        'OutcomeId',
+        'ProjectId',
+        'Title',
+        'Description',
+        'ArtifactLink',
+        'OutcomeType',
+        'QualityCertification',
+        'CommercializationStatus',
     ];
 
     public function project()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class, 'ProjectId', 'projectId');
     }
 }

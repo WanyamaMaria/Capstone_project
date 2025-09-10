@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('facilities', function (Blueprint $table) {
-            $table->id();
-            $table->string('facility_id')->unique();
+            $table->string('facility_id')->primary(); // ✅ This is now the PK
             $table->string('name');
             $table->string('location');
             $table->text('description')->nullable();

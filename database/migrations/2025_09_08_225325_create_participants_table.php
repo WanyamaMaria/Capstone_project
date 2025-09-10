@@ -9,14 +9,22 @@ class CreateParticipantsTable extends Migration
     public function up()
     {
         Schema::create('participants', function (Blueprint $table) {
-            $table->id('participantId'); // Custom primary key
+            $table->string('participantId')->primary(); // ✅ Custom string-based PK
+
             $table->string('fullName');
             $table->string('email')->unique();
             $table->string('affiliation'); // CS, SE, Engineering, etc.
             $table->string('specialization'); // Software, hardware, business
             $table->boolean('crossSkillTrained')->default(false);
             $table->string('institution'); // SCIT, CEDAT, UniPod, etc.
-            $table->foreignId('project_id')->nullable()->constrained()->nullOnDelete(); // No cascade
+
+            // ✅ Explicit foreign key to projects.projectId
+            $table->string('project_id')->nullable();
+            $table->foreign('project_id')
+                  ->references('projectId')
+                  ->on('projects')
+                  ->nullOnDelete();
+
             $table->timestamps();
         });
     }

@@ -37,9 +37,18 @@ class ProjectController extends Controller
             'prototype_stage' => 'required|string',
             'testing_requirements' => 'nullable|string',
             'commercialization_plan' => 'nullable|string',
-            'facility_id' => 'required|exists:facilities,id',
-            'program_id' => 'required|exists:programs,id',
+            'facility_id' => 'required|exists:facilities,facility_id',
+            'program_id' => 'required|exists:programs,program_id',
         ]);
+
+        // Generate custom projectId
+        $lastProject = Project::withTrashed()->orderBy('projectId', 'desc')->first();
+        $newNumber = $lastProject
+            ? intval(str_replace('PR-', '', $lastProject->projectId)) + 1
+            : 1;
+        $projectId = 'PR-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+
+        $validated['projectId'] = $projectId;
 
         Project::create($validated);
 
@@ -71,8 +80,8 @@ class ProjectController extends Controller
             'prototype_stage' => 'required|string',
             'testing_requirements' => 'nullable|string',
             'commercialization_plan' => 'nullable|string',
-            'facility_id' => 'required|exists:facilities,id',
-            'program_id' => 'required|exists:programs,id',
+            'facility_id' => 'required|exists:facilities,facility_id',
+            'program_id' => 'required|exists:programs,program_id',
         ]);
 
         $project->update($validated);
@@ -87,7 +96,6 @@ class ProjectController extends Controller
         return redirect()->route('projects.index')->with('success', 'Project deleted successfully.');
     }
 
-    // Custom: Show participant assignment form
     public function assignParticipants(Project $project)
     {
         $participants = Participant::all();
@@ -95,16 +103,15 @@ class ProjectController extends Controller
         return view('projects.assign', compact('project', 'participants'));
     }
 
-    // Custom: Store assigned participants
     public function storeParticipants(Request $request, Project $project)
     {
         $validated = $request->validate([
             'participant_ids' => 'required|array',
-            'participant_ids.*' => 'exists:participants,id',
+            'participant_ids.*' => 'exists:participants,participantId',
         ]);
 
-        Participant::whereIn('id', $validated['participant_ids'])->update([
-            'project_id' => $project->id,
+        Participant::whereIn('participantId', $validated['participant_ids'])->update([
+            'project_id' => $project->projectId,
         ]);
 
         return redirect()->route('projects.show', $project)->with('success', 'Participants assigned successfully.');

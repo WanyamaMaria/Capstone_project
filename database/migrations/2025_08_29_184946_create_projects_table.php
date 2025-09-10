@@ -12,16 +12,17 @@ return new class extends Migration
             // Custom primary key
             $table->string('projectId')->primary();
 
-            // Foreign keys referencing custom IDs
+            // Foreign key to facilities
             $table->string('facility_id');
             $table->foreign('facility_id')
-                  ->references('facilityId')
+                  ->references('facility_id')
                   ->on('facilities')
                   ->onDelete('cascade');
 
+            // Foreign key to programs (corrected to match program_id)
             $table->string('program_id');
             $table->foreign('program_id')
-                  ->references('programId')
+                  ->references('program_id') // ✅ Matches programs table
                   ->on('programs')
                   ->onDelete('cascade');
 
@@ -35,6 +36,7 @@ return new class extends Migration
             $table->text('commercialization_plan')->nullable();
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

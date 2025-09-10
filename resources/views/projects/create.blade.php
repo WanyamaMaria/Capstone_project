@@ -99,7 +99,7 @@
                     class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded px-3 py-2" required>
                 <option value="">Select Facility</option>
                 @foreach($facilities as $facility)
-                    <option value="{{ $facility->id }}" {{ old('facility_id') == $facility->id ? 'selected' : '' }}>
+                    <option value="{{ $facility->facility_id }}" {{ old('facility_id') == $facility->facility_id ? 'selected' : '' }}>
                         {{ $facility->name }}
                     </option>
                 @endforeach
@@ -116,7 +116,7 @@
                     class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded px-3 py-2" required>
                 <option value="">Select Program</option>
                 @foreach($programs as $program)
-                    <option value="{{ $program->id }}" {{ old('program_id') == $program->id ? 'selected' : '' }}>
+                    <option value="{{ $program->program_id }}" {{ old('program_id') == $program->program_id ? 'selected' : '' }}>
                         {{ $program->name }}
                     </option>
                 @endforeach
