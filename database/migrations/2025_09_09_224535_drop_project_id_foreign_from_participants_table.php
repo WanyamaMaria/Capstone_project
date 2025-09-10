@@ -11,18 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('equipment', function (Blueprint $table) {
-            $table->string('equipmentId')->unique()->after('id');
+        Schema::table('participants', function (Blueprint $table) {
+            $table->dropForeign(['project_id']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::table('equipment', function (Blueprint $table) {
-            $table->dropColumn('equipmentId');
+        Schema::table('participants', function (Blueprint $table) {
+            $table->foreign('project_id')->references('id')->on('projects')->nullOnDelete();
         });
     }
+
 };
