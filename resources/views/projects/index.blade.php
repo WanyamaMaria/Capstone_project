@@ -46,17 +46,17 @@
 
     <div class="bg-white dark:bg-gray-900 rounded-lg shadow-md overflow-x-auto">
         @if($projects->count() > 0)
-            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <table class="w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead class="bg-gray-100 dark:bg-gray-800">
                     <tr>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 dark:text-gray-300 uppercase">Title</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 dark:text-gray-300 uppercase">Facility</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 dark:text-gray-300 uppercase">Program</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 dark:text-gray-300 uppercase">Nature</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 dark:text-gray-300 uppercase">Stage</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 dark:text-gray-300 uppercase">Focus</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 dark:text-gray-300 uppercase">Overview</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 dark:text-gray-300 uppercase">Actions</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 font-bold uppercase">Title</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 font-bold uppercase">Facility</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 font-bold uppercase">Program</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 font-bold uppercase">Nature</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 font-bold uppercase">Stage</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 font-bold uppercase">Focus</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 font-bold uppercase">Overview</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 font-bold uppercase">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
@@ -67,12 +67,12 @@
                                     {{ $project->title }}
                                 </a>
                             </td>
-                            <td class="px-4 py-2">{{ $project->facility->name ?? 'N/A' }}</td>
-                            <td class="px-4 py-2">{{ $project->program->name ?? 'N/A' }}</td>
-                            <td class="px-4 py-2">{{ $project->nature_of_project }}</td>
-                            <td class="px-4 py-2">{{ $project->prototype_stage }}</td>
-                            <td class="px-4 py-2">{{ $project->innovation_focus }}</td>
-                            <td class="px-4 py-2">{{ Str::limit($project->project_overview, 50) }}</td>
+                            <td class="px-4 py-2 text-left">{{ $project->facility->name ?? 'N/A' }}</td>
+                            <td class="px-4 py-2 text-left">{{ $project->program->name ?? 'N/A' }}</td>
+                            <td class="px-4 py-2 text-left">{{ $project->nature_of_project }}</td>
+                            <td class="px-4 py-2 text-left">{{ $project->prototype_stage }}</td>
+                            <td class="px-4 py-2 text-left">{{ $project->innovation_focus }}</td>
+                            <td class="px-4 py-2 text-left">{{ Str::limit($project->project_overview, 50) }}</td>
                             <td class="px-4 py-2 flex gap-2">
                                 <a href="{{ route('projects.edit', $project) }}" class="text-green-600 dark:text-green-400 hover:underline">Edit</a>
                                 <form action="{{ route('projects.destroy', $project) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this project?');">

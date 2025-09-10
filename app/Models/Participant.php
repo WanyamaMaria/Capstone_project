@@ -8,8 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Participant extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'participantId'; // Custom primary key
+
+    protected $primaryKey = 'participantId';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = [
+        'participantId',
         'fullName',
         'email',
         'affiliation',
@@ -18,8 +23,15 @@ class Participant extends Model
         'institution',
         'project_id',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'participantId';
+    }
+
     public function project()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class, 'project_id', 'projectId');
     }
+
 }

@@ -9,10 +9,27 @@ use Illuminate\Support\Facades\Storage;
 
 class OutcomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $outcomes = Outcome::with('project')->get();
-        return view('outcomes.index', compact('outcomes'));
+        $query = Outcome::with('project');
+
+        // Search by title or description
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('Title', 'like', '%' . $request->search . '%')
+                  ->orWhere('Description', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Filter by project
+        if ($request->filled('ProjectId')) {
+            $query->where('ProjectId', $request->ProjectId);
+        }
+
+        $outcomes = $query->paginate(10);
+        $projects = Project::all();
+
+        return view('outcomes.index', compact('outcomes', 'projects'));
     }
 
     public function create()

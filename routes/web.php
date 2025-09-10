@@ -24,5 +24,5 @@ Route::resource('participants', ParticipantController::class);
 Route::resource('outcomes', OutcomeController::class);
 
 // Custom project routes
-Route::get('projects/{project}/assign', [ProjectController::class, 'assignParticipants'])->name('projects.assign');
-Route::post('projects/{project}/assign', [ProjectController::class, 'storeParticipants'])->name('projects.storeParticipants');
+Route::post('/participants/{participant}/assign', [ParticipantController::class, 'assignToProject'])->name('participants.assign');
+Route::post('/participants/{participant}/remove', [ParticipantController::class, 'removeFromProject'])->name('participants.remove');
