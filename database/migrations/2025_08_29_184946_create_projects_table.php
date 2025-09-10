@@ -9,10 +9,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('projects', function (Blueprint $table) {
-            $table->id();
-            $table->string('title'); // Added per spec
+            $table->string('projectId')->primary();
+            $table->string('facility_id');
+            $table->foreign('facility_id')->references('facilityId')->on('facilities')->onDelete('cascade');
+            $table->string('program_id');
+            $table->foreign('program_id')->references('programId')->on('programs')->onDelete('cascade');
+            $table->string('name');
+            $table->text('description')->nullable();
             $table->timestamps();
-        });
+});
+
     }
 
     public function down(): void

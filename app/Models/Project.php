@@ -17,14 +17,14 @@ class Project extends Model
     // Project belongs to a Facility
     public function facility()
     {
-        return $this->belongsTo(Facility::class);
+        return $this->belongsTo(Facility::class, 'facility_id', 'facilityId');
     }
 
-    // Project belongs to a Program
     public function program()
     {
-        return $this->belongsTo(Program::class);
+        return $this->belongsTo(Program::class, 'program_id', 'programId');
     }
+
     // Project has many Outcomes 
     public function outcomes()
     {

@@ -5,7 +5,7 @@
 @section('content')
 <div class="max-w-2xl mx-auto bg-white shadow-md rounded p-6">
     <h1 class="text-xl font-bold mb-4">Edit Program</h1>
-    <form action="{{ route('programs.update', $program->id) }}" method="POST">
+    <form action="{{ route('programs.update', $program) }}" method="POST">
         @csrf
         @method('PUT')
 

@@ -34,7 +34,7 @@ class ServiceController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'facility_id' => 'required|exists:facilities,id',
+            'facility_id' => 'required|exists:facilities,facility_id',
         ]);
 
         Service::create($validated);

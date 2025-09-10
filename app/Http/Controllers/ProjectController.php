@@ -33,12 +33,14 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'facility_id' => 'required|exists:facilities,id',
-            'program_id' => 'required|exists:programs,id',
-        ]);
+        
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'facility_id' => 'required|exists:facilities,facilityId',
+                'program_id' => 'required|exists:programs,programId',
+]);
+
 
         Project::create($validated);
 
