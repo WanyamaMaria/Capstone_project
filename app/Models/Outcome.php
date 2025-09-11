@@ -14,14 +14,17 @@ class Outcome extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
+  
+
     protected $fillable = [
-        'project_id',
-        'title',
-        'description',
-        'artifact_link',
-        'outcome_type',
-        'quality_certification',
-        'commercialization_status',
+        'OutcomeId',
+        'ProjectId',
+        'Title',
+        'Description',
+        'ArtifactLink',
+        'OutcomeType',
+        'QualityCertification',
+        'CommercializationStatus',
     ];
 
     // Relationship to Project

@@ -18,8 +18,34 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
-});
 
+
+            // Foreign key to facilities
+            $table->string('facility_id');
+            $table->foreign('facility_id')
+                  ->references('facility_id')
+                  ->on('facilities')
+                  ->onDelete('cascade');
+
+            // Foreign key to programs (corrected to match program_id)
+            $table->string('program_id');
+            $table->foreign('program_id')
+                  ->references('program_id') // ✅ Matches programs table
+                  ->on('programs')
+                  ->onDelete('cascade');
+
+            // Project fields
+            $table->string('title');
+            $table->text('project_overview')->nullable();
+            $table->string('nature_of_project');
+            $table->string('innovation_focus')->nullable();
+            $table->string('prototype_stage');
+            $table->text('testing_requirements')->nullable();
+            $table->text('commercialization_plan')->nullable();
+
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     public function down(): void

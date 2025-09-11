@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Program;
 use Illuminate\Http\Request;
 
-
 class ProgramController extends Controller
 {
     /**
@@ -32,26 +31,34 @@ class ProgramController extends Controller
     {
         $request->validate([
             'name'                => 'required|string|max:255',
-            'description'         => 'required|nullable|string',
-            'national_alignment'  => 'required|nullable|string|max:255',
-            'focus_areas'         => 'required|nullable|string|max:255',
-            'phases'              => 'required|nullable|string|max:255',
+            'description'         => 'nullable|string',
+            'national_alignment'  => 'nullable|string|max:255',
+            'focus_areas'         => 'nullable|string|max:255',
+            'phases'              => 'nullable|string|max:255',
         ]);
-         $lastProgram= Program::withTrashed()->latest('id')->first();
-         $newNumber = $lastProgram ? $lastProgram->id + 1 : 1;
-         $programId = 'P-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
 
+        // Get the last program by program_id
+        $lastProgram = Program::withTrashed()
+                              ->orderBy('program_id', 'desc')
+                              ->first();
 
-        
+        // Extract numeric part and increment
+        $newNumber = $lastProgram
+            ? intval(str_replace('P-', '', $lastProgram->program_id)) + 1
+            : 1;
+
+        // Format new program_id
+        $programId = 'P-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+
+        // Create new program
         $program = Program::create([
-            'name' => $request->name,
-            'description' => $request->description,
+            'program_id'         => $programId,
+            'name'               => $request->name,
+            'description'        => $request->description,
             'national_alignment' => $request->national_alignment,
-            'focus_areas' => $request->focus_areas,
-            'phases' => $request->phases,
-            'program_id' => $programId,
-        
-    ]);
+            'focus_areas'        => $request->focus_areas,
+            'phases'             => $request->phases,
+        ]);
 
         return redirect()->route('programs.index')
                          ->with('success', 'Program created successfully.');

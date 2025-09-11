@@ -14,6 +14,7 @@ class Participant extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'participant_id',
         'fullName',
         'email',
         'affiliation',
@@ -21,10 +22,17 @@ class Participant extends Model
         'crossSkillTrained',
         'institution',
         'project_id',
-        'participantId',
+       
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'participant_id';
+    }
+
     public function project()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class, 'project_id', 'project_id');
     }
+
 }

@@ -6,6 +6,12 @@
 <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-6">
     <h1 class="text-2xl font-bold mb-6 text-blue-700">Edit Equipment</h1>
 
+    @if(session('success'))
+        <div id="success-message" class="mb-4 text-green-700 bg-green-100 border border-green-300 rounded px-4 py-2">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <form action="{{ route('equipment.update', $equipment) }}" method="POST">
         @csrf
         @method('PUT')
@@ -91,7 +97,6 @@
 </div>
 
 <script>
-    // Auto-fade flash messages
     setTimeout(() => {
         const flash = document.getElementById('success-message');
         if (flash) {

@@ -14,13 +14,13 @@
     </div>
 
     @if(session('success'))
-        <div class="mb-4 text-green-700 bg-green-100 border border-green-300 rounded px-4 py-2">
+        <div class="mb-4 text-blue-800 bg-blue-100 border border-blue-300 rounded px-4 py-2">
             {{ session('success') }}
         </div>
     @endif
 
     <form method="GET" action="{{ route('equipment.index') }}" class="mb-6 flex flex-wrap gap-4 items-center">
-        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search equipment…" class="border rounded px-4 py-2 w-64">
+        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search equipment…" class="border rounded px-4 py-2 w-64 focus:ring-blue-500 focus:border-blue-500">
 
         <select name="facility_id" class="border rounded px-4 py-2" onchange="this.form.submit()">
             <option value="">All Facilities</option>
@@ -49,7 +49,7 @@
             @endforeach
         </select>
 
-        <a href="{{ route('equipment.index') }}" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg font-medium">
+        <a href="{{ route('equipment.index') }}" class="bg-blue-400 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-medium">
             <i class="fa-solid fa-rotate-left mr-1"></i> Reset
         </a>
     </form>
@@ -57,32 +57,32 @@
     <div class="bg-white rounded-lg shadow-md overflow-x-auto">
         @if($equipment->count() > 0)
             <div class="min-w-full">
-                <table class="w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-100">
+                <table class="w-full divide-y divide-blue-200">
+                    <thead class="bg-blue-100 text-blue-800 uppercase text-sm font-bold">
                         <tr>
-                            <th class="px-4 py-2 text-left text-xs font-bold text-gray-900 uppercase">
-                                <i class="fa-solid fa-tag mr-1 text-gray-600"></i> Name
+                            <th class="px-4 py-2 text-left">
+                                <i class="fa-solid fa-tag mr-1 text-blue-600"></i> Name
                             </th>
-                            <th class="px-4 py-2 text-left text-xs font-bold text-gray-900 uppercase">
-                                <i class="fa-solid fa-building mr-1 text-gray-600"></i> Facility
+                            <th class="px-4 py-2 text-left">
+                                <i class="fa-solid fa-building mr-1 text-blue-600"></i> Facility
                             </th>
-                            <th class="px-4 py-2 text-left text-xs font-bold text-gray-900 uppercase">
-                                <i class="fa-solid fa-layer-group mr-1 text-gray-600"></i> Usage Domain
+                            <th class="px-4 py-2 text-left">
+                                <i class="fa-solid fa-layer-group mr-1 text-blue-600"></i> Usage Domain
                             </th>
-                            <th class="px-4 py-2 text-left text-xs font-bold text-gray-900 uppercase">
-                                <i class="fa-solid fa-chart-line mr-1 text-gray-600"></i> Support Phase
+                            <th class="px-4 py-2 text-left">
+                                <i class="fa-solid fa-chart-line mr-1 text-blue-600"></i> Support Phase
                             </th>
-                            <th class="px-4 py-2 text-left text-xs font-bold text-gray-900 uppercase">
-                                <i class="fa-solid fa-cogs mr-1 text-gray-600"></i> Capabilities
+                            <th class="px-4 py-2 text-left">
+                                <i class="fa-solid fa-cogs mr-1 text-blue-600"></i> Capabilities
                             </th>
-                            <th class="px-4 py-2 text-left text-xs font-bold text-gray-900 uppercase">
-                                <i class="fa-solid fa-eye mr-1 text-gray-600"></i> Actions
+                            <th class="px-4 py-2 text-left">
+                                <i class="fa-solid fa-eye mr-1 text-blue-600"></i> Actions
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tbody class="bg-white divide-y divide-blue-100">
                         @foreach($equipment as $item)
-                            <tr>
+                            <tr class="hover:bg-blue-50 transition">
                                 <td class="px-4 py-2">{{ $item->name }}</td>
                                 <td class="px-4 py-2">{{ $item->facility->name ?? '—' }}</td>
                                 <td class="px-4 py-2">{{ $item->usageDomain }}</td>

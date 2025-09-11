@@ -67,7 +67,7 @@ public function index(Request $request)
     /**
      * Store a newly created facility in storage.
      */
- 
+
 
 public function store(Request $request)
 {

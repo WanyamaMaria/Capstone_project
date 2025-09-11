@@ -9,10 +9,27 @@ use Illuminate\Support\Facades\Storage;
 
 class OutcomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $outcomes = Outcome::all();
-        return view('outcomes.index', compact('outcomes'));
+        $query = Outcome::with('project');
+
+        // Search by title or description
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('Title', 'like', '%' . $request->search . '%')
+                  ->orWhere('Description', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Filter by project
+        if ($request->filled('ProjectId')) {
+            $query->where('ProjectId', $request->ProjectId);
+        }
+
+        $outcomes = $query->paginate(10);
+        $projects = Project::all();
+
+        return view('outcomes.index', compact('outcomes', 'projects'));
     }
 
     public function create()
@@ -24,20 +41,21 @@ class OutcomeController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'OutcomeId' => 'required|string|unique:outcomes,OutcomeId',
+            'ProjectId' => 'required|exists:projects,projectId',
+            'Title' => 'required|string|max:255',
+            'Description' => 'nullable|string',
             'artifact' => 'nullable|file|mimes:pdf,docx,jpg,png,zip|max:2048',
-            'outcome_type' => 'required|string',
-            'quality_certification' => 'nullable|string',
-            'commercialization_status' => 'nullable|string',
-            'project_id' => 'required|exists:projects,id',
+            'OutcomeType' => 'required|string',
+            'QualityCertification' => 'nullable|string',
+            'CommercializationStatus' => 'nullable|string',
         ]);
 
         $outcome = new Outcome($validated);
 
         if ($request->hasFile('artifact')) {
             $path = $request->file('artifact')->store('public/artifacts');
-            $outcome->artifact_link = Storage::url($path);
+            $outcome->ArtifactLink = Storage::url($path);
         }
 
         $outcome->save();
@@ -45,39 +63,39 @@ class OutcomeController extends Controller
         return redirect()->route('outcomes.index')->with('success', 'Outcome created.');
     }
 
-    public function show($id)
+    public function show($OutcomeId)
     {
-        $outcome = Outcome::findOrFail($id);
+        $outcome = Outcome::with('project')->findOrFail($OutcomeId);
         return view('outcomes.show', compact('outcome'));
     }
 
-    public function edit($id)
+    public function edit($OutcomeId)
     {
-        $outcome = Outcome::findOrFail($id);
+        $outcome = Outcome::findOrFail($OutcomeId);
         $projects = Project::all();
         return view('outcomes.edit', compact('outcome', 'projects'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $OutcomeId)
     {
-        $outcome = Outcome::findOrFail($id);
+        $outcome = Outcome::findOrFail($OutcomeId);
 
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'Title' => 'required|string|max:255',
+            'Description' => 'nullable|string',
             'artifact' => 'nullable|file|mimes:pdf,docx,jpg,png,zip|max:2048',
-            'outcome_type' => 'required|string',
-            'quality_certification' => 'nullable|string',
-            'commercialization_status' => 'nullable|string',
-            'project_id' => 'required|exists:projects,id',
+            'OutcomeType' => 'required|string',
+            'QualityCertification' => 'nullable|string',
+            'CommercializationStatus' => 'nullable|string',
+            'ProjectId' => 'required|exists:projects,projectId',
         ]);
 
         if ($request->hasFile('artifact')) {
-            if ($outcome->artifact_link) {
-                Storage::delete(str_replace('/storage', 'public', $outcome->artifact_link));
+            if ($outcome->ArtifactLink) {
+                Storage::delete(str_replace('/storage', 'public', $outcome->ArtifactLink));
             }
             $path = $request->file('artifact')->store('public/artifacts');
-            $validated['artifact_link'] = Storage::url($path);
+            $validated['ArtifactLink'] = Storage::url($path);
         }
 
         $outcome->update($validated);
@@ -85,11 +103,11 @@ class OutcomeController extends Controller
         return redirect()->route('outcomes.index')->with('success', 'Outcome updated.');
     }
 
-    public function destroy($id)
+    public function destroy($OutcomeId)
     {
-        $outcome = Outcome::findOrFail($id);
-        if ($outcome->artifact_link) {
-            Storage::delete(str_replace('/storage', 'public', $outcome->artifact_link));
+        $outcome = Outcome::findOrFail($OutcomeId);
+        if ($outcome->ArtifactLink) {
+            Storage::delete(str_replace('/storage', 'public', $outcome->ArtifactLink));
         }
         $outcome->delete();
         return redirect()->route('outcomes.index')->with('success', 'Outcome deleted.');

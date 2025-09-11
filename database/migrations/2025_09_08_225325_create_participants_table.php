@@ -9,7 +9,7 @@ class CreateParticipantsTable extends Migration
     public function up()
     {
         Schema::create('participants', function (Blueprint $table) {
-            $table->string('participant_d')->primary; // Custom primary key
+            $table->string('participant_id')->primary; // Custom primary key
             $table->string('project_id');
 
             $table->string('fullName');

@@ -14,14 +14,20 @@ class Project extends Model
     public $incrementing = false;
     protected $keyType = 'string';
     protected $fillable = [
-        'name',
-        'description',
+       
+        'title',
+        'project_overview',
+        'nature_of_project',
+        'innovation_focus',
+        'prototype_stage',
+        'testing_requirements',
+        'commercialization_plan',
         'facility_id',
         'program_id',
         'project_id',
     ];
 
-    // Project belongs to a Facility
+    // Relationships
     public function facility()
     {
         return $this->belongsTo(Facility::class, 'facility_id', 'facility_id');
@@ -32,14 +38,13 @@ class Project extends Model
         return $this->belongsTo(Program::class, 'program_id', 'program_id');
     }
 
-    // Project has many Outcomes 
     public function outcomes()
     {
-        return $this->hasMany(Outcome::class);
-    }
-    public function participants()
-    {
-        return $this->hasMany(Participant::class);
+        return $this->hasMany(Outcome::class, 'project_id', 'project_id'); // ✅ Explicit mapping
     }
 
+    public function participants()
+    {
+        return $this->hasMany(Participant::class, 'project_id', 'project_id'); // ✅ Explicit mapping
+    }
 }
