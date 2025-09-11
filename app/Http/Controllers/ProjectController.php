@@ -37,12 +37,21 @@ class ProjectController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'description' => 'nullable|string',
-                'facility_id' => 'required|exists:facilities,facilityId',
-                'program_id' => 'required|exists:programs,programId',
+                'facility_id' => 'required|exists:facilities,facility_id',
+                'program_id' => 'required|exists:programs,program_id',
 ]);
+            $lastItem = Project::withTrashed()->latest('project_id')->first();
+        $lastNumber = $lastItem ? intval(substr($lastItem->project_id, 4)) : 0;
+        $project_id = 'PRO-' . str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+        Project::create([
+            'project_id' => $project_id,
+            'name' => $request->name,
+            'description' => $request->description,
+            'facility_id' => $request->facility_id,
+            'program_id' => $request->program_id,
 
-
-        Project::create($validated);
+        ]);
+        
 
         return redirect()->route('projects.index')->with('success', 'Project created successfully.');
     }

@@ -81,9 +81,18 @@ public function store(Request $request)
     ]);
 
     // Generate unique facility_id (consider soft-deleted)
-    $lastFacility = Facility::withTrashed()->latest('id')->first();
-    $newNumber = $lastFacility ? $lastFacility->id + 1 : 1;
-    $facilityId = 'FAC-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+   $lastFacility = Facility::withTrashed()->latest('facility_id')->first();
+
+        if ($lastFacility) {
+            // Extract the numeric part from the facility_id, e.g., FAC-0001
+            $lastNumber = (int) str_replace('FAC-', '', $lastFacility->facility_id);
+            $newNumber = $lastNumber + 1;
+        } else {
+            $newNumber = 1;
+        }
+
+        $facilityId = 'FAC-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+
 
     $facility = Facility::create([
         'name' => $request->name,

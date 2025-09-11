@@ -9,14 +9,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('projects', function (Blueprint $table) {
-            $table->string('projectId')->primary();
+            $table->string('project_id')->primary();
             $table->string('facility_id');
-            $table->foreign('facility_id')->references('facilityId')->on('facilities')->onDelete('cascade');
+            $table->foreign('facility_id')->references('facility_id')->on('facilities')->onDelete('cascade');
             $table->string('program_id');
-            $table->foreign('program_id')->references('programId')->on('programs')->onDelete('cascade');
+            $table->foreign('program_id')->references('program_id')->on('programs')->onDelete('cascade');
             $table->string('name');
             $table->text('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 });
 
     }

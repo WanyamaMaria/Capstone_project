@@ -28,10 +28,11 @@
             <select name="facility_id" id="facility_id" class="w-full border border-gray-300 rounded px-3 py-2" required>
                 <option value="">Select Facility</option>
                 @foreach($facilities as $facility)
-                    <option value="{{ $facility->id }}" {{ old('facility_id') == $facility->id ? 'selected' : '' }}>
+                    <option value="{{ $facility->facility_id }}" {{ old('facility_id') == $facility->facility_id ? 'selected' : '' }}>
                         {{ $facility->name }}
                     </option>
                 @endforeach
+
             </select>
             @error('facility_id')
                 <div class="text-red-600 text-sm">{{ $message }}</div>

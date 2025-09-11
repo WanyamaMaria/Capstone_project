@@ -24,6 +24,8 @@ class ServiceController extends Controller
     {
         $facilities = Facility::all();
         return view('services.create', compact('facilities'));
+         return redirect()->route('services.index')
+                     ->with('success', 'Service created successfully.');
     }
 
     /**
@@ -32,12 +34,29 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'Name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'facility_id' => 'required|exists:facilities,facility_id',
         ]);
+        
+    
+        
+       $lastItem = Service::withTrashed()->latest('service_id')->first();
+        $lastNumber = $lastItem ? intval(substr($lastItem->service_id, 4)) : 0;
 
-        Service::create($validated);
+// Generate the next ServiceId
+$service_id = 'SER-' . str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+
+Service::create([
+    'service_id' => $service_id,
+    'Name' => $request->Name,
+    'description' => $request->description,
+    'facility_id' => $request->facility_id,
+]);
+
+
+
+        
 
         return redirect()->route('services.index')->with('success', 'Service created successfully.');
     }

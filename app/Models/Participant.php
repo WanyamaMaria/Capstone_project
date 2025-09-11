@@ -4,11 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Participant extends Model
 {
-    use HasFactory;
-    protected $primaryKey = 'participantId'; // Custom primary key
+    use HasFactory, SoftDeletes;
+    protected $primaryKey = 'participant_id'; // snake_case
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = [
         'fullName',
         'email',
@@ -17,6 +21,7 @@ class Participant extends Model
         'crossSkillTrained',
         'institution',
         'project_id',
+        'participantId',
     ];
     public function project()
     {

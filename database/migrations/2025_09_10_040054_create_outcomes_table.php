@@ -9,18 +9,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('outcomes', function (Blueprint $table) {
-            $table->id();
-            $table->integer('project_id')->unsigned(); // Foreign key, SQLite-compatible
+            $table->string('outcome_id')->primary();           // Unique identifier
+            $table->string('project_id');                      // FK to projects
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('artifact_link')->nullable();
-            $table->string('outcome_type');
+            $table->string('outcome_type')->nullable();       // CAD, PCB, Prototype, etc.
             $table->string('quality_certification')->nullable();
-            $table->string('commercialization_status')->nullable();
+            $table->string('commercialization_status')->nullable(); // Demoed, Market Linked, Launched
             $table->timestamps();
+            $table->softDeletes();
 
-            // SQLite doesn't enforce foreign keys by default; add manually if needed
-            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+            $table->foreign('project_id')
+                  ->references('project_id')
+                  ->on('projects')
+                  ->onDelete('cascade');
         });
     }
 
