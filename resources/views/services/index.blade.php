@@ -11,11 +11,12 @@
         </a>
     </div>
 
-    @if(session('success'))
-        <div class="mb-4 text-green-700 bg-green-100 border border-green-300 rounded px-4 py-2">
-            {{ session('success') }}
-        </div>
-    @endif
+  @if(session('success'))
+    <div id="success-message" class="success-message">
+        
+        {{ session('success') }}
+    </div>
+@endif
 
     <div class="bg-white rounded-lg shadow-md">
         @if($services->count() > 0)
@@ -55,9 +56,19 @@
             </div>
         @else
             <div class="p-12 text-center text-gray-500">
-                No services found. <a href="{{ route('services.create') }}" class="text-blue-600 hover:underline">Add a new service</a>.
+                No services found.
             </div>
         @endif
     </div>
 </div>
+<script>
+      setTimeout(() => {
+        const flash = document.getElementById('success-message');
+        if (flash) {
+            flash.style.transition = 'opacity 0.5s ease';
+            flash.style.opacity = '0';
+            setTimeout(() => flash.remove(), 500);
+        }
+    }, 4000);
+</script>
 @endsection

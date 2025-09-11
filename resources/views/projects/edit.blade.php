@@ -22,7 +22,7 @@
         {{-- Project Overview --}}
         <div class="mb-4">
             <label for="project_overview" class="block font-medium mb-1">Project Overview</label>
-            <textarea name="project_overview" id="project_overview" rows="3"
+            <textarea name="project_overview" id="project_overview" value= "{{ old( 'project_overview, $project->project_overview')}}"
                       class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded px-3 py-2">{{ old('project_overview', $project->project_overview) }}</textarea>
             @error('project_overview')
                 <div class="text-red-600 text-sm">{{ $message }}</div>
@@ -101,12 +101,12 @@
                     class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded px-3 py-2" required>
                 <option value="">Select Facility</option>
                 @foreach($facilities as $facility)
-                    <option value="{{ $facility->id }}" {{ old('facility_id', $project->facility_id) == $facility->id ? 'selected' : '' }}>
+                    <option value="{{ $facility->facility_id }}" {{ old('facility_facility_id', $project->facility_facility_id) == $facility->facility_id ? 'selected' : '' }}>
                         {{ $facility->name }}
                     </option>
                 @endforeach
             </select>
-            @error('facility_id')
+            @error('facility_facility_id')
                 <div class="text-red-600 text-sm">{{ $message }}</div>
             @enderror
         </div>
@@ -118,12 +118,12 @@
                     class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded px-3 py-2" required>
                 <option value="">Select Program</option>
                 @foreach($programs as $program)
-                    <option value="{{ $program->id }}" {{ old('program_id', $project->program_id) == $program->id ? 'selected' : '' }}>
+                    <option value="{{ $program->program_id }}" {{ old('program_program_id', $project->program_program_id) == $program->program_id ? 'selected' : '' }}>
                         {{ $program->name }}
                     </option>
                 @endforeach
             </select>
-            @error('program_id')
+            @error('program_program_id')
                 <div class="text-red-600 text-sm">{{ $message }}</div>
             @enderror
         </div>

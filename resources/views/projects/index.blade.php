@@ -10,11 +10,12 @@
         </a>
     </div>
 
-    @if(session('success'))
-        <div class="mb-4 text-green-700 bg-green-100 border border-green-300 rounded px-4 py-2 dark:bg-green-900 dark:text-green-300">
-            {{ session('success') }}
-        </div>
-    @endif
+   @if(session('success'))
+    <div id="success-message" class="success-message">
+        
+        {{ session('success') }}
+    </div>
+@endif
 
     {{-- Optional Filters --}}
     <form method="GET" action="{{ route('projects.index') }}" class="mb-6 flex flex-wrap gap-4">
@@ -55,7 +56,11 @@
                         <th class="px-4 py-2 text-left text-xs font-medium text-black-500 font-bold uppercase">Stage</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-black-500 font-bold uppercase">Focus</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-black-500 font-bold uppercase">Overview</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 font-bold uppercase">Description</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 font-bold uppercase">Commercialization Plan</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-black-500 font-bold uppercase">Testing Requirements</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-black-500 font-bold uppercase">Actions</th>
+
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
@@ -71,7 +76,11 @@
                             <td class="px-4 py-2 text-left">{{ $project->nature_of_project }}</td>
                             <td class="px-4 py-2 text-left">{{ $project->prototype_stage }}</td>
                             <td class="px-4 py-2 text-left">{{ $project->innovation_focus }}</td>
-                            <td class="px-4 py-2 text-left">{{ Str::limit($project->project_overview, 50) }}</td>
+                            <td class="px-4 py-2 text-left">{{ $project->project_overview }}</td>
+                            <td class="px-4 py-2 text-left">{{ $project->description }}</td>
+                            <td class="px-4 py-2 text-left">{{ $project->commercialization_plan }}</td>
+                            <td class="px-4 py-2 text-left">{{ $project-> testing_requirements }}</td>
+
                             <td class="px-4 py-2 flex gap-2">
                                 <a href="{{ route('projects.edit', $project) }}" class="text-green-600 dark:text-green-400 hover:underline">Edit</a>
                                 <form action="{{ route('projects.destroy', $project) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this project?');">
@@ -89,9 +98,18 @@
             </div>
         @else
             <div class="p-12 text-center text-gray-500 dark:text-gray-400">
-                No projects found. <a href="{{ route('projects.create') }}" class="text-blue-600 dark:text-blue-400 hover:underline">Add a new project</a>.
-            </div>
+                No projects found. 
         @endif
     </div>
 </div>
+<script>
+      setTimeout(() => {
+        const flash = document.getElementById('success-message');
+        if (flash) {
+            flash.style.transition = 'opacity 0.5s ease';
+            flash.style.opacity = '0';
+            setTimeout(() => flash.remove(), 500);
+        }
+    }, 4000);
+</script>
 @endsection

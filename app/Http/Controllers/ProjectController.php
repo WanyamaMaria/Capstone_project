@@ -31,20 +31,33 @@ class ProjectController extends Controller
     {
         
             $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'description' => 'nullable|string',
+                'title' => 'required|string|max:255',
+                'project_overview' => 'nullable|string',
+                'nature_of_project' => 'required|string',
+                'innovation_focus' => 'nullable|string',
+                'prototype_stage' => 'required|string',
+                'testing_requirements' => 'nullable|string',
+                'commercialization_plan' => 'nullable|string',
                 'facility_id' => 'required|exists:facilities,facility_id',
                 'program_id' => 'required|exists:programs,program_id',
-]);
-            $lastItem = Project::withTrashed()->latest('project_id')->first();
+                'description' => 'required|string'
+    ]);
+         $lastItem = Project::withTrashed()->latest('project_id')->first();
         $lastNumber = $lastItem ? intval(substr($lastItem->project_id, 4)) : 0;
         $project_id = 'PRO-' . str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
         Project::create([
             'project_id' => $project_id,
-            'name' => $request->name,
+            'title' => $request->title,
             'description' => $request->description,
             'facility_id' => $request->facility_id,
             'program_id' => $request->program_id,
+            'commercialization_plan' => $request->commercialization_plan,
+            'prototype_stage' => $request->prototype_stage,
+            'innovation_focus' => $request->innovation_focus,
+            'nature_of_project' => $request->nature_of_project,
+            'project_overview' => $request->project_overview,
+            'testing_requirements' => $request->testing_requirements,
+
 
         ]);
         
@@ -79,6 +92,7 @@ class ProjectController extends Controller
             'commercialization_plan' => 'nullable|string',
             'facility_id' => 'required|exists:facilities,facility_id',
             'program_id' => 'required|exists:programs,program_id',
+            'description' => 'required|string'
         ]);
 
         $project->update($validated);
@@ -104,10 +118,10 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'participant_ids' => 'required|array',
-            'participant_ids.*' => 'exists:participants,participantId',
+            'participant_ids.*' => 'exists:participants,participant_id',
         ]);
 
-        Participant::whereIn('participantId', $validated['participant_ids'])->update([
+        Participant::whereIn('participant_id', $validated['participant_ids'])->update([
             'project_id' => $project->projectId,
         ]);
 

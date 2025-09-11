@@ -13,11 +13,12 @@
         </a>
     </div>
 
-    @if(session('success'))
-        <div class="mb-4 text-blue-800 bg-blue-100 border border-blue-300 rounded px-4 py-2">
-            {{ session('success') }}
-        </div>
-    @endif
+  @if(session('success'))
+    <div id="success-message" class="success-message">
+        
+        {{ session('success') }}
+    </div>
+@endif
 
     <form method="GET" action="{{ route('equipment.index') }}" class="mb-6 flex flex-wrap gap-4 items-center">
         <input type="text" name="search" value="{{ request('search') }}" placeholder="Search equipment…" class="border rounded px-4 py-2 w-64 focus:ring-blue-500 focus:border-blue-500">
@@ -117,7 +118,7 @@
             </div>
         @else
             <div class="p-12 text-center text-gray-500">
-                No equipment found. <a href="{{ route('equipment.create') }}" class="text-blue-600 hover:underline">Add a new equipment</a>.
+                No equipment found. 
             </div>
         @endif
     </div>
@@ -158,7 +159,10 @@
         modal.classList.remove('flex');
     }
 
-     setTimeout(() => {
+   
+</script>
+<script>
+      setTimeout(() => {
         const flash = document.getElementById('success-message');
         if (flash) {
             flash.style.transition = 'opacity 0.5s ease';

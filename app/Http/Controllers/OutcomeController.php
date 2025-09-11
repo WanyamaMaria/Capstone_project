@@ -16,14 +16,14 @@ class OutcomeController extends Controller
         // Search by title or description
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
-                $q->where('Title', 'like', '%' . $request->search . '%')
-                  ->orWhere('Description', 'like', '%' . $request->search . '%');
+                $q->where('title', 'like', '%' . $request->search . '%')
+                  ->orWhere('description', 'like', '%' . $request->search . '%');
             });
         }
 
         // Filter by project
-        if ($request->filled('ProjectId')) {
-            $query->where('ProjectId', $request->ProjectId);
+        if ($request->filled('project_id')) {
+            $query->where('project_id', $request->ProjectId);
         }
 
         $outcomes = $query->paginate(10);
@@ -39,29 +39,39 @@ class OutcomeController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'OutcomeId' => 'required|string|unique:outcomes,OutcomeId',
-            'ProjectId' => 'required|exists:projects,projectId',
-            'Title' => 'required|string|max:255',
-            'Description' => 'nullable|string',
-            'artifact' => 'nullable|file|mimes:pdf,docx,jpg,png,zip|max:2048',
-            'OutcomeType' => 'required|string',
-            'QualityCertification' => 'nullable|string',
-            'CommercializationStatus' => 'nullable|string',
-        ]);
+{
+    $validated = $request->validate([
+        'project_id' => 'required|exists:projects,project_id',
+        'title' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'artifact' => 'nullable|file|mimes:pdf,docx,jpg,png,zip|max:2048',
+        'outcome_type' => 'required|string',
+        'quality_certification' => 'nullable|string',
+        'commercialization_status' => 'nullable|string',
+    ]);
 
-        $outcome = new Outcome($validated);
+    $lastItem = Outcome::withTrashed()->latest('outcome_id')->first();
+    $lastNumber = $lastItem ? intval(substr($lastItem->outcome_id, 4)) : 0;
+    $outcome_id = 'OUT-' . str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
 
-        if ($request->hasFile('artifact')) {
-            $path = $request->file('artifact')->store('public/artifacts');
-            $outcome->ArtifactLink = Storage::url($path);
-        }
+    $outcome = Outcome::create([
+        'outcome_id' => $outcome_id,
+        'project_id' => $validated['project_id'],
+        'title' => $validated['title'],
+        'description' => $validated['description'] ?? null,
+        'outcome_type' => $validated['outcome_type'],
+        'quality_certification' => $validated['quality_certification'] ?? null,
+        'commercialization_status' => $validated['commercialization_status'] ?? null,
+    ]);
 
+    if ($request->hasFile('artifact')) {
+        $path = $request->file('artifact')->store('public/artifacts');
+        $outcome->artifact_link = Storage::url($path);
         $outcome->save();
-
-        return redirect()->route('outcomes.index')->with('success', 'Outcome created.');
     }
+
+    return redirect()->route('outcomes.index')->with('success', 'Outcome created.');
+}
 
     public function show($OutcomeId)
     {
@@ -76,32 +86,33 @@ class OutcomeController extends Controller
         return view('outcomes.edit', compact('outcome', 'projects'));
     }
 
-    public function update(Request $request, $OutcomeId)
-    {
-        $outcome = Outcome::findOrFail($OutcomeId);
+   public function update(Request $request, $OutcomeId)
+{
+    $outcome = Outcome::findOrFail($OutcomeId);
 
-        $validated = $request->validate([
-            'Title' => 'required|string|max:255',
-            'Description' => 'nullable|string',
-            'artifact' => 'nullable|file|mimes:pdf,docx,jpg,png,zip|max:2048',
-            'OutcomeType' => 'required|string',
-            'QualityCertification' => 'nullable|string',
-            'CommercializationStatus' => 'nullable|string',
-            'ProjectId' => 'required|exists:projects,projectId',
-        ]);
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'artifact' => 'nullable|file|mimes:pdf,docx,jpg,png,zip|max:2048',
+        'outcome_type' => 'required|string',
+        'quality_certification' => 'nullable|string',
+        'commercialization_status' => 'nullable|string',
+        'project_id' => 'required|exists:projects,project_id',
+    ]);
 
-        if ($request->hasFile('artifact')) {
-            if ($outcome->ArtifactLink) {
-                Storage::delete(str_replace('/storage', 'public', $outcome->ArtifactLink));
-            }
-            $path = $request->file('artifact')->store('public/artifacts');
-            $validated['ArtifactLink'] = Storage::url($path);
+    // Handle artifact upload
+    if ($request->hasFile('artifact')) {
+        if ($outcome->artifact_link) {
+            Storage::delete(str_replace('/storage', 'public', $outcome->artifact_link));
         }
-
-        $outcome->update($validated);
-
-        return redirect()->route('outcomes.index')->with('success', 'Outcome updated.');
+        $path = $request->file('artifact')->store('public/artifacts');
+        $validated['artifact_link'] = Storage::url($path);
     }
+
+    $outcome->update($validated);
+
+    return redirect()->route('outcomes.index')->with('success', 'Outcome updated.');
+}
 
     public function destroy($OutcomeId)
     {

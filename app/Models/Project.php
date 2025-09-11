@@ -25,6 +25,7 @@ class Project extends Model
         'facility_id',
         'program_id',
         'project_id',
+        'description'
     ];
 
     // Relationships

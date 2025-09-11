@@ -8,10 +8,10 @@
     <form action="{{ route('projects.store') }}" method="POST" class="bg-white rounded-lg shadow-md p-6">
         @csrf
         <div class="mb-4">
-            <label for="name" class="block font-medium mb-1">Name</label>
-            <input type="text" name="name" id="name" value="{{ old('name') }}"
+            <label for="name" class="block font-medium mb-1">Title</label>
+            <input type="text" name="title" id="title" value="{{ old('title') }}"
                    class="w-full border border-gray-300 rounded px-3 py-2" required>
-            @error('name')
+            @error('title')
                 <div class="text-red-600 text-sm">{{ $message }}</div>
             @enderror
         </div>

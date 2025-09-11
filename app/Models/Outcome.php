@@ -17,14 +17,14 @@ class Outcome extends Model
   
 
     protected $fillable = [
-        'OutcomeId',
-        'ProjectId',
-        'Title',
-        'Description',
-        'ArtifactLink',
-        'OutcomeType',
-        'QualityCertification',
-        'CommercializationStatus',
+        'outcome_id',
+        'project_id',
+        'title',
+        'description',
+        'artifact_link',
+        'outcome_type',
+        'quality_certification',
+        'commercialization_status',
     ];
 
     // Relationship to Project
