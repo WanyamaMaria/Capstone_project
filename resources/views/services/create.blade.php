@@ -24,6 +24,24 @@
             @enderror
         </div>
         <div class="mb-4">
+            <label for="category" class="block font-medium mb-1">Category</label>
+            <input type="text" name="category" id="category" value="{{ old('category') }}"
+                   class="w-full border border-gray-300 rounded px-3 py-2">
+            @error('category')
+                <div class="text-red-600 text-sm">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mb-4">
+            <label for="skill_type" class="block font-medium mb-1">Skill Type</label>
+            <input type="text" name="skill_type" id="skill_type" value="{{ old('skill_type') }}"
+                   class="w-full border border-gray-300 rounded px-3 py-2">
+            @error('skill_type')
+                <div class="text-red-600 text-sm">{{ $message }}</div>
+            @enderror
+        </div>
+        
+        <div class="mb-4">
             <label for="facility_id" class="block font-medium mb-1">Facility</label>
             <select name="facility_id" id="facility_id" class="w-full border border-gray-300 rounded px-3 py-2" required>
                 <option value="">Select Facility</option>

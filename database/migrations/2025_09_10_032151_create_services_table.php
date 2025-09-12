@@ -15,10 +15,10 @@ return new class extends Migration
             $table->string('service_id')->primary; // Primary key
             $table->string('facility_id'); // Foreign key
 
-            $table->string('Name');
-            $table->text('Description')->nullable();
-            $table->string('Category')->nullable();   // Machining, Testing, Training
-            $table->string('SkillType')->nullable();  // Hardware, Software, Integration
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->string('category')->nullable();   // Machining, Testing, Training
+            $table->string('skill_type')->nullable();  // Hardware, Software, Integration
 
             $table->timestamps();
             $table->softDeletes(); // Soft deletes

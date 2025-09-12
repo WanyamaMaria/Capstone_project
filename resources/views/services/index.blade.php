@@ -26,6 +26,8 @@
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Facility</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">SkillType</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                     </tr>
                 </thead>
@@ -38,7 +40,9 @@
                                 </a>
                             </td>
                             <td class="px-4 py-2">{{ $service->facility->name ?? 'N/A' }}</td>
-                            <td class="px-4 py-2">{{ Str::limit($service->description, 50) }}</td>
+                            <td class="px-4 py-2">{{ $service->description }}</td>
+                            <td class="px-4 py-2">{{ $service->category }}</td>
+                            <td class="px-4 py-2">{{ $service->skill_type }}</td>
                             <td class="px-4 py-2 flex gap-2">
                                 <a href="{{ route('services.edit', $service) }}" class="text-green-600 hover:underline">Edit</a>
                                 <form action="{{ route('services.destroy', $service) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this service?');">

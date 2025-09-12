@@ -44,6 +44,13 @@
         </tr>
         @endforeach
     </tbody>
+    @if($programs->isEmpty())
+        <tr>
+            <td colspan="6" class="px-4 py-2 text-center text-gray-500">No programs found.</td>
+        </tr>
+    @endif
+
+    
 </table>
 <script>
     // Wait 4 seconds, then fade out the message

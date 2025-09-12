@@ -81,12 +81,12 @@ class ParticipantController extends Controller
     {
         $validated = $request->validate([
             'fullName' => 'required|string|max:255',
-            'email' => 'required|email|unique:participants,email,' . $participant->participantId . ',participantId',
+            'email' => 'required|email|unique:participants,email,' . $participant->participant_id . ',participant_id',
             'affiliation' => 'required|string',
             'specialization' => 'required|string',
             'crossSkillTrained' => 'boolean',
             'institution' => 'required|string',
-            'project_id' => 'nullable|exists:projects,projectId',
+            'project_id' => 'nullable|exists:projects,project_id',
         ]);
 
         $participant->update($validated);

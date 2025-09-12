@@ -9,20 +9,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Service extends Model
 {
  use HasFactory, SoftDeletes;
-    protected $primaryKey = 'ServiceId';
+    protected $primaryKey = 'service_id';
     public $incrementing = false;
     protected $keyType = 'string';
-
-    
-
 
     protected $fillable = [
         'service_id',
         'facility_id',
-        'Name',
-        'Description',
-        'Category',
-        'SkillType',
+        'name',
+        'description',
+        'category',
+        'skill_type',
     ];
 
 
@@ -30,6 +27,6 @@ class Service extends Model
     // Service belongs to a Facility
     public function facility()
     {
-        return $this->belongsTo(Facility::class);
+        return $this->belongsTo(Facility::class , 'facility_id', 'facility_id');
     } //
 }

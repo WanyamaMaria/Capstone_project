@@ -9,8 +9,21 @@
         <strong>Description:</strong>
         <p>{{ $service->description }}</p>
     </div>
+
+    <div class="mb-2">
+        <strong>Category:</strong>
+        <span>{{ $service->category ?? 'N/A' }}</span>
+    </div>
+
+    <div class="mb-2">
+        <strong>Skill Type:</strong>
+        <span>{{ $service->skill_type ?? 'N/A' }}</span>
+    </div>
+
     <div class="mb-2">
         <strong>Facility:</strong>
         <span>{{ $service->facility->name ?? 'N/A' }}</span>
     </div>
+
+    
     <a href="{{ route('services.index') }}" class="text-blue-600 hover:underline">Back to Services</a>

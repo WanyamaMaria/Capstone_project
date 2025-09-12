@@ -80,25 +80,25 @@ class ProjectController extends Controller
         return view('projects.edit', compact('project', 'facilities', 'programs'));
     }
 
-    public function update(Request $request, Project $project)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'project_overview' => 'nullable|string',
-            'nature_of_project' => 'required|string',
-            'innovation_focus' => 'nullable|string',
-            'prototype_stage' => 'required|string',
-            'testing_requirements' => 'nullable|string',
-            'commercialization_plan' => 'nullable|string',
-            'facility_id' => 'required|exists:facilities,facility_id',
-            'program_id' => 'required|exists:programs,program_id',
-            'description' => 'required|string'
-        ]);
+   public function update(Request $request, Project $project)
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'project_overview' => 'nullable|string',   // ✅ removed required|nullable
+        'nature_of_project' => 'required|string',
+        'innovation_focus' => 'nullable|string',
+        'prototype_stage' => 'required|string',
+        'testing_requirements' => 'nullable|string', // ✅ removed required|nullable
+        'commercialization_plan' => 'nullable|string',
+        'facility_id' => 'required|exists:facilities,facility_id',
+        'program_id' => 'required|exists:programs,program_id',
+        'description' => 'required|string'
+    ]);
 
-        $project->update($validated);
+    $project->update($validated);
 
-        return redirect()->route('projects.index')->with('success', 'Project updated successfully.');
-    }
+    return redirect()->route('projects.index')->with('success', 'Project updated successfully.');
+}
 
     public function destroy(Project $project)
     {

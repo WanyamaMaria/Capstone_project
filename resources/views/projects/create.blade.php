@@ -16,7 +16,7 @@
             @enderror
         </div>
 
-        {{-- Project Overview --}}
+        {{-- Description--}}
         <div class="mb-4">
             <label for="description" class="block font-medium mb-1">Description</label>
             <textarea name="description" id="description" rows="3"
@@ -25,6 +25,17 @@
                 <div class="text-red-600 text-sm">{{ $message }}</div>
             @enderror
         </div>
+
+        {{-- Project Overview --}}
+        <div class="mb-4">
+            <label for="project_overview" class="block font-medium mb-1">Project Overview</label>
+            <textarea name="project_overview" id="project_overview" rows="3"
+                    class="w-full border border-gray-300 rounded px-3 py-2">{{ old('project_overview') }}</textarea>
+            @error('project_overview')
+                <div class="text-red-600 text-sm">{{ $message }}</div>
+            @enderror
+        </div>
+
 
         {{-- Nature of Project --}}
         <div class="mb-4">

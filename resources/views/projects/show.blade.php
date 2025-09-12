@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Project Details')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{{ asset('css/facilities.css') }}">
 
 @section('content')
 <div class="container mx-auto px-4 py-6">

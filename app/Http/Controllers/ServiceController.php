@@ -34,31 +34,29 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'Name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'facility_id' => 'required|exists:facilities,facility_id',
+            'category' => 'nullable|string|max:255',
+            'skill_type' => 'nullable|string|max:255',
+
         ]);
         
     
         
-       $lastItem = Service::withTrashed()->latest('service_id')->first();
+        $lastItem = Service::withTrashed()->latest('service_id')->first();
         $lastNumber = $lastItem ? intval(substr($lastItem->service_id, 4)) : 0;
-
-// Generate the next ServiceId
-$service_id = 'SER-' . str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+        $service_id = 'SER-' . str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
 
 Service::create([
     'service_id' => $service_id,
-    'Name' => $request->Name,
+    'name' => $request->name,
     'description' => $request->description,
     'facility_id' => $request->facility_id,
+    'category' => $request->category,
+    'skill_type' => $request->skill_type,
 ]);
-
-
-
-        
-
-        return redirect()->route('services.index')->with('success', 'Service created successfully.');
+    return redirect()->route('services.index')->with('success', 'Service created successfully.');
     }
 
     /**
@@ -87,7 +85,10 @@ Service::create([
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'facility_id' => 'required|exists:facilities,id',
+            'facility_id' => 'required|exists:facilities,facility_id',
+            'category' => 'nullable|string|max:255',
+            'skill_type' => 'nullable|string|max:255',
+
         ]);
 
         $service->update($validated);
