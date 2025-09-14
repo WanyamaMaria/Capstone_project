@@ -12,7 +12,7 @@
 
    @if(session('success'))
     <div id="success-message" class="success-message">
-        
+
         {{ session('success') }}
     </div>
 @endif
@@ -23,7 +23,7 @@
             <select name="facility_id" class="form-select rounded px-3 py-2 dark:bg-gray-700 dark:text-white">
                 <option value="">Filter by Facility</option>
                 @foreach($facilities as $facility)
-                    <option value="{{ $facility->id }}" {{ request('facility_id') == $facility->id ? 'selected' : '' }}>
+                    <option value="{{ $facility->facility_id }}" {{ request('facility_id') == $facility->facility_id ? 'selected' : '' }}>
                         {{ $facility->name }}
                     </option>
                 @endforeach
@@ -33,7 +33,7 @@
             <select name="program_id" class="form-select rounded px-3 py-2 dark:bg-gray-700 dark:text-white">
                 <option value="">Filter by Program</option>
                 @foreach($programs as $program)
-                    <option value="{{ $program->id }}" {{ request('program_id') == $program->id ? 'selected' : '' }}>
+                    <option value="{{ $program->program_id }}" {{ request('program_id') == $program->program_id ? 'selected' : '' }}>
                         {{ $program->name }}
                     </option>
                 @endforeach
@@ -98,7 +98,7 @@
             </div>
         @else
             <div class="p-12 text-center text-gray-500 dark:text-gray-400">
-                No projects found. 
+                No projects found.
         @endif
     </div>
 </div>

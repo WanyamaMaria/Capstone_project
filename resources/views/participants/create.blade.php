@@ -35,7 +35,7 @@
             <select name="project_id" id="project_id" class="w-full border px-3 py-2 rounded dark:bg-gray-700 dark:text-white">
                 <option value="">None</option>
                 @foreach($projects as $project)
-                    <option value="{{ $project->projectId }}">{{ $project->title }}</option>
+                    <option value="{{ $project->project_id }}">{{ $project->title }}</option>
                 @endforeach
             </select>
         </div>

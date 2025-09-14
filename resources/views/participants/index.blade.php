@@ -46,7 +46,7 @@
         <select name="project_id" class="border rounded px-4 py-2" onchange="this.form.submit()">
             <option value="">All Projects</option>
             @foreach(App\Models\Project::all() as $project)
-                <option value="{{ $project->projectId }}" {{ request('project_id') == $project->projectId ? 'selected' : '' }}>
+                <option value="{{ $project->project_id }}" {{ request('project_id') == $project->project_id ? 'selected' : '' }}>
                     {{ $project->title }}
                 </option>
             @endforeach
@@ -91,13 +91,13 @@
                             <td class="px-4 py-2 text-left">{{ $participant->affiliation }}</td>
                             <td class="px-4 py-2 text-left">{{ $participant->project->title ?? '—' }}</td>
                             <td class="px-4 py-2 whitespace-nowrap">
-                                <a href="{{ route('participants.show', $participant->participantId) }}" class="text-blue-600 hover:underline">
+                                <a href="{{ route('participants.show', $participant->participant_id) }}" class="text-blue-600 hover:underline">
                                     <i class="fa-solid fa-eye mr-1"></i> View
                                 </a>
-                                <a href="{{ route('participants.edit', $participant->participantId) }}" class="text-green-600 hover:underline ml-2">
+                                <a href="{{ route('participants.edit', $participant->participant_id) }}" class="text-green-600 hover:underline ml-2">
                                     <i class="fa-solid fa-pen-to-square mr-1"></i> Edit
                                 </a>
-                                <form action="{{ route('participants.destroy', $participant->participantId) }}" method="POST" class="inline ml-2" onsubmit="return confirm('Delete this participant?');">
+                                <form action="{{ route('participants.destroy', $participant->participant_id) }}" method="POST" class="inline ml-2" onsubmit="return confirm('Delete this participant?');">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:underline">
                                         <i class="fa-solid fa-trash mr-1"></i> Delete
@@ -105,12 +105,12 @@
                                 </form>
                             </td>
                             <td class="px-4 py-2">
-                                <form action="{{ route('participants.assign', $participant->participantId) }}" method="POST" class="flex gap-2 items-center">
+                                <form action="{{ route('participants.assign', $participant->participant_id) }}" method="POST" class="flex gap-2 items-center">
                                     @csrf
                                     <select name="project_id" class="border rounded px-2 py-1">
                                         <option value="">None</option>
                                         @foreach(App\Models\Project::all() as $project)
-                                            <option value="{{ $project->projectId }}" {{ $participant->project_id === $project->projectId ? 'selected' : '' }}>
+                                            <option value="{{ $project->project_id }}" {{ $participant->project_id === $project->project_id ? 'selected' : '' }}>
                                                 {{ $project->title }}
                                             </option>
                                         @endforeach

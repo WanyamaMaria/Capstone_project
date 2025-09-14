@@ -29,7 +29,7 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-        
+
             $validated = $request->validate([
                 'title' => 'required|string|max:255',
                 'project_overview' => 'nullable|string',
@@ -60,7 +60,7 @@ class ProjectController extends Controller
 
 
         ]);
-        
+
 
         return redirect()->route('projects.index')->with('success', 'Project created successfully.');
     }
@@ -122,7 +122,7 @@ class ProjectController extends Controller
         ]);
 
         Participant::whereIn('participant_id', $validated['participant_ids'])->update([
-            'project_id' => $project->projectId,
+            'project_id' => $project->project_id,
         ]);
 
         return redirect()->route('projects.show', $project)->with('success', 'Participants assigned successfully.');

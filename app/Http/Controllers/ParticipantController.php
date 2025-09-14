@@ -58,13 +58,13 @@ class ParticipantController extends Controller
             'specialization' => 'required|string',
             'crossSkillTrained' => 'boolean',
             'institution' => 'required|string',
-            'project_id' => 'nullable|exists:projects,projectId',
+            'project_id' => 'nullable|exists:projects,project_id',
         ]);
 
         // Auto-generate participantId
-        $last = Participant::orderBy('participantId', 'desc')->first();
-        $nextNumber = $last ? intval(str_replace('PT-', '', $last->participantId)) + 1 : 1;
-        $validated['participantId'] = 'PT-' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+        $last = Participant::orderBy('participant_id', 'desc')->first();
+        $nextNumber = $last ? intval(str_replace('PT-', '', $last->participant_id)) + 1 : 1;
+        $validated['participant_id'] = 'PT-' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
 
         Participant::create($validated);
 
@@ -103,7 +103,7 @@ class ParticipantController extends Controller
     public function assignToProject(Request $request, Participant $participant)
     {
         $request->validate([
-            'project_id' => 'required|exists:projects,projectId',
+            'project_id' => 'required|exists:projects,project_id',
         ]);
 
         $participant->update(['project_id' => $request->project_id]);

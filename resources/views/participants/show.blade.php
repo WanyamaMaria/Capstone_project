@@ -28,7 +28,7 @@
         </h2>
 
         <ul class="space-y-2 text-gray-700 text-sm">
-            <li><strong><i class="fa-solid fa-hashtag mr-1 text-gray-500"></i> Participant ID:</strong> {{ $participant->participantId }}</li>
+            <li><strong><i class="fa-solid fa-hashtag mr-1 text-gray-500"></i> Participant ID:</strong> {{ $participant->participant_id }}</li>
             <li><strong><i class="fa-solid fa-envelope mr-1 text-gray-500"></i> Email:</strong> {{ $participant->email }}</li>
             <li><strong><i class="fa-solid fa-building-columns mr-1 text-gray-500"></i> Affiliation:</strong> {{ $participant->affiliation }}</li>
             <li><strong><i class="fa-solid fa-screwdriver-wrench mr-1 text-gray-500"></i> Specialization:</strong> {{ $participant->specialization }}</li>
