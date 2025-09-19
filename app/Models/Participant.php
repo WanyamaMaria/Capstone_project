@@ -9,30 +9,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Participant extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $primaryKey = 'participant_id'; // snake_case
+
+    protected $primaryKey = 'participant_id';
     public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
         'participant_id',
-        'fullName',
+        'full_name',
         'email',
         'affiliation',
         'specialization',
-        'crossSkillTrained',
+        'cross_skill_trained',
         'institution',
-        'project_id',
-       
     ];
 
-    public function getRouteKeyName()
+    // Many-to-many relationship
+    public function projects()
     {
-        return 'participant_id';
+        return $this->belongsToMany(Project::class, 'project_participants', 'participant_id', 'project_id');
     }
-
-    public function project()
-    {
-        return $this->belongsTo(Project::class, 'project_id', 'project_id');
-    }
-
 }

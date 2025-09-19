@@ -14,25 +14,15 @@
     </div>
 
     @if(session('success'))
-        <div id="success-message" class="mb-4 text-blue-800 bg-blue-100 border border-blue-300 rounded px-4 py-2">
+        <div class="mb-4 text-green-700 bg-green-100 border border-green-300 rounded px-4 py-2">
             {{ session('success') }}
         </div>
-        <script>
-            setTimeout(() => {
-                const flash = document.getElementById('success-message');
-                if (flash) {
-                    flash.style.transition = 'opacity 0.5s ease';
-                    flash.style.opacity = '0';
-                    setTimeout(() => flash.remove(), 500);
-                }
-            }, 4000);
-        </script>
     @endif
 
     <!-- Search & Filters -->
     <form method="GET" action="{{ route('participants.index') }}" class="mb-6 flex flex-wrap gap-4 items-center">
         <input type="text" name="search" value="{{ request('search') }}" placeholder="Search participants…"
-               class="border rounded px-4 py-2 w-64 focus:ring-blue-500 focus:border-blue-500">
+               class="border rounded px-4 py-2 w-64">
 
         <select name="affiliation" class="border rounded px-4 py-2" onchange="this.form.submit()">
             <option value="">All Affiliations</option>
@@ -52,7 +42,7 @@
             @endforeach
         </select>
 
-        <a href="{{ route('participants.index') }}" class="bg-blue-400 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-medium">
+        <a href="{{ route('participants.index') }}" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg">
             <i class="fa-solid fa-rotate-left mr-1"></i> Reset
         </a>
     </form>
@@ -63,61 +53,35 @@
             <table class="min-w-full divide-y divide-blue-200">
                 <thead class="bg-blue-100 text-blue-900 uppercase text-sm font-bold">
                     <tr>
-                        <th class="px-4 py-2 text-left">
-                            <i class="fa-solid fa-user mr-1 text-blue-600"></i> Name
-                        </th>
-                        <th class="px-4 py-2 text-left">
-                            <i class="fa-solid fa-envelope mr-1 text-blue-600"></i> Email
-                        </th>
-                        <th class="px-4 py-2 text-left">
-                            <i class="fa-solid fa-building-columns mr-1 text-blue-600"></i> Affiliation
-                        </th>
-                        <th class="px-4 py-2 text-left">
-                            <i class="fa-solid fa-diagram-project mr-1 text-blue-600"></i> Project
-                        </th>
-                        <th class="px-4 py-2 text-left">
-                            <i class="fa-solid fa-eye mr-1 text-blue-600"></i> Actions
-                        </th>
-                        <th class="px-4 py-2 text-left">
-                            <i class="fa-solid fa-thumbtack mr-1 text-blue-600"></i> Assign
-                        </th>
+                        <th class="px-4 py-2 text-left">Name</th>
+                        <th class="px-4 py-2 text-left">Email</th>
+                        <th class="px-4 py-2 text-left">Affiliation</th>
+                        <th class="px-4 py-2 text-left">Projects</th>
+                        <th class="px-4 py-2 text-left">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-blue-100">
                     @foreach($participants as $participant)
                         <tr class="hover:bg-blue-50 transition">
-                            <td class="px-4 py-2 text-left">{{ $participant->fullName }}</td>
-                            <td class="px-4 py-2 text-left">{{ $participant->email }}</td>
-                            <td class="px-4 py-2 text-left">{{ $participant->affiliation }}</td>
-                            <td class="px-4 py-2 text-left">{{ $participant->project->title ?? '—' }}</td>
-                            <td class="px-4 py-2 whitespace-nowrap">
-                                <a href="{{ route('participants.show', $participant->participant_id) }}" class="text-blue-600 hover:underline">
-                                    <i class="fa-solid fa-eye mr-1"></i> View
-                                </a>
-                                <a href="{{ route('participants.edit', $participant->participant_id) }}" class="text-green-600 hover:underline ml-2">
-                                    <i class="fa-solid fa-pen-to-square mr-1"></i> Edit
-                                </a>
-                                <form action="{{ route('participants.destroy', $participant->participant_id) }}" method="POST" class="inline ml-2" onsubmit="return confirm('Delete this participant?');">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:underline">
-                                        <i class="fa-solid fa-trash mr-1"></i> Delete
-                                    </button>
-                                </form>
+                            <td class="px-4 py-2">{{ $participant->full_name }}</td>
+                            <td class="px-4 py-2">{{ $participant->email }}</td>
+                            <td class="px-4 py-2">{{ $participant->affiliation }}</td>
+                            <td class="px-4 py-2">
+                                @if($participant->projects->isEmpty())
+                                    —
+                                @else
+                                    @foreach($participant->projects as $project)
+                                        {{ $project->title }}{{ !$loop->last ? ', ' : '' }}
+                                    @endforeach
+                                @endif
                             </td>
                             <td class="px-4 py-2">
-                                <form action="{{ route('participants.assign', $participant->participant_id) }}" method="POST" class="flex gap-2 items-center">
+                                <a href="{{ route('participants.show', $participant->participant_id) }}" class="text-blue-600 hover:underline">View</a>
+                                <a href="{{ route('participants.edit', $participant->participant_id) }}" class="text-green-600 hover:underline ml-2">Edit</a>
+                                <form action="{{ route('participants.destroy', $participant->participant_id) }}" method="POST" class="inline ml-2" onsubmit="return confirm('Delete this participant?');">
                                     @csrf
-                                    <select name="project_id" class="border rounded px-2 py-1">
-                                        <option value="">None</option>
-                                        @foreach(App\Models\Project::all() as $project)
-                                            <option value="{{ $project->project_id }}" {{ $participant->project_id === $project->project_id ? 'selected' : '' }}>
-                                                {{ $project->title }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <button type="submit" class="bg-indigo-600 text-white px-3 py-1 rounded">
-                                        <i class="fa-solid fa-thumbtack mr-1"></i> Assign
-                                    </button>
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:underline">Delete</button>
                                 </form>
                             </td>
                         </tr>

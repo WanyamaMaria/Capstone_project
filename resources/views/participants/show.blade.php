@@ -1,46 +1,39 @@
 @extends('layouts.app')
 
-@section('title', 'Participant Profile')
+@section('title', 'Participant Details')
 
 @section('content')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<div class="container mx-auto px-4 py-6">
+    <div class="bg-white p-6 rounded shadow-md">
+        <h1 class="text-2xl font-bold mb-4">{{ $participant->full_name }}</h1>
 
-<div class="max-w-4xl mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold text-gray-900 mb-4">
-        <i class="fa-solid fa-user mr-2 text-blue-600"></i> Participant Profile
-    </h1>
+        <p><strong>Email:</strong> {{ $participant->email }}</p>
+        <p><strong>Affiliation:</strong> {{ $participant->affiliation }}</p>
+        <p><strong>Specialization:</strong> {{ $participant->specialization }}</p>
+        <p><strong>Institution:</strong> {{ $participant->institution }}</p>
+        <p><strong>Cross-Skill Trained:</strong> {{ $participant->cross_skill_trained ? 'Yes' : 'No' }}</p>
 
-    @if(session('success'))
-        <div id="success-alert" class="mb-4 text-green-700 bg-green-100 border border-green-300 rounded px-4 py-2">
-            {{ session('success') }}
+        <div class="mt-4">
+            <strong>Assigned Projects:</strong>
+            @if($participant->projects->isEmpty())
+                <span>—</span>
+            @else
+                <ul class="list-disc list-inside">
+                    @foreach($participant->projects as $project)
+                        <li>{{ $project->title }}</li>
+                    @endforeach
+                </ul>
+            @endif
         </div>
-        <script>
-            setTimeout(() => {
-                const alert = document.getElementById('success-alert');
-                if (alert) alert.remove();
-            }, 4000);
-        </script>
-    @endif
 
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">
-            <i class="fa-solid fa-id-badge mr-2 text-gray-600"></i> {{ $participant->fullName }}
-        </h2>
-
-        <ul class="space-y-2 text-gray-700 text-sm">
-            <li><strong><i class="fa-solid fa-hashtag mr-1 text-gray-500"></i> Participant ID:</strong> {{ $participant->participant_id }}</li>
-            <li><strong><i class="fa-solid fa-envelope mr-1 text-gray-500"></i> Email:</strong> {{ $participant->email }}</li>
-            <li><strong><i class="fa-solid fa-building-columns mr-1 text-gray-500"></i> Affiliation:</strong> {{ $participant->affiliation }}</li>
-            <li><strong><i class="fa-solid fa-screwdriver-wrench mr-1 text-gray-500"></i> Specialization:</strong> {{ $participant->specialization }}</li>
-            <li><strong><i class="fa-solid fa-school mr-1 text-gray-500"></i> Institution:</strong> {{ $participant->institution }}</li>
-            <li><strong><i class="fa-solid fa-brain mr-1 text-gray-500"></i> Cross-Skill Trained:</strong> {{ $participant->crossSkillTrained ? 'Yes' : 'No' }}</li>
-            <li><strong><i class="fa-solid fa-diagram-project mr-1 text-gray-500"></i> Project:</strong> {{ $participant->project->title ?? '—' }}</li>
-        </ul>
-
-        <div class="mt-6">
-            <a href="{{ route('participants.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-medium">
-                <i class="fa-solid fa-arrow-left mr-1"></i> Back to List
-            </a>
+        <div class="flex gap-4 mt-6">
+            <a href="{{ route('participants.edit', $participant->participant_id) }}" class="bg-green-600 text-white px-4 py-2 rounded">Edit</a>
+            <a href="{{ route('participants.index') }}" class="bg-gray-400 text-white px-4 py-2 rounded">Back</a>
+            <form action="{{ route('participants.destroy', $participant->participant_id) }}" method="POST" onsubmit="return confirm('Delete this participant?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">Delete</button>
+            </form>
         </div>
     </div>
 </div>

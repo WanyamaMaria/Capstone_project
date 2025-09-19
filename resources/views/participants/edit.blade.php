@@ -6,12 +6,12 @@
 <div class="container mx-auto px-4 py-6">
     <h1 class="text-2xl font-bold mb-4">Edit Participant</h1>
 
-    <form action="{{ route('participants.update', $participant->participant_id) }}" method="POST" class="bg-white dark:bg-gray-800 p-6 rounded shadow-md">
+    <form action="{{ route('participants.update', $participant->participant_id) }}" method="POST" class="bg-white p-6 rounded shadow-md">
         @csrf
         @method('PUT')
 
         @foreach([
-            'fullName' => 'Full Name',
+            'full_name' => 'Full Name',
             'email' => 'Email',
             'affiliation' => 'Affiliation',
             'specialization' => 'Specialization',
@@ -21,33 +21,34 @@
                 <label for="{{ $field }}" class="block font-medium mb-1">{{ $label }}</label>
                 <input type="text" name="{{ $field }}" id="{{ $field }}"
                        value="{{ old($field, $participant->$field) }}"
-                       class="w-full border px-3 py-2 rounded dark:bg-gray-700 dark:text-white" required>
+                       class="w-full border px-3 py-2 rounded" required>
             </div>
         @endforeach
 
         <div class="mb-4">
-            <label for="crossSkillTrained" class="block font-medium mb-1">Cross-Skill Trained</label>
-            <select name="crossSkillTrained" id="crossSkillTrained" class="w-full border px-3 py-2 rounded dark:bg-gray-700 dark:text-white">
-                <option value="0" {{ !$participant->crossSkillTrained ? 'selected' : '' }}>No</option>
-                <option value="1" {{ $participant->crossSkillTrained ? 'selected' : '' }}>Yes</option>
+            <label for="cross_skill_trained" class="block font-medium mb-1">Cross-Skill Trained</label>
+            <select name="cross_skill_trained" id="cross_skill_trained" class="w-full border px-3 py-2 rounded">
+                <option value="0" {{ !$participant->cross_skill_trained ? 'selected' : '' }}>No</option>
+                <option value="1" {{ $participant->cross_skill_trained ? 'selected' : '' }}>Yes</option>
             </select>
         </div>
 
         <div class="mb-4">
-            <label for="project_id" class="block font-medium mb-1">Assign to Project</label>
-            <select name="project_id" id="project_id" class="w-full border px-3 py-2 rounded dark:bg-gray-700 dark:text-white">
-                <option value="">None</option>
+            <label for="projects" class="block font-medium mb-1">Assign to Projects</label>
+            <select name="projects[]" id="projects" class="w-full border px-3 py-2 rounded" multiple>
                 @foreach($projects as $project)
-                    <option value="{{ $project->project_id }}" {{ $participant->project_id === $project->project_id ? 'selected' : '' }}>
+                    <option value="{{ $project->project_id }}"
+                        {{ in_array($project->project_id, old('projects', $participant->projects->pluck('project_id')->toArray())) ? 'selected' : '' }}>
                         {{ $project->title }}
                     </option>
                 @endforeach
             </select>
+            <p class="text-sm text-gray-500 mt-1">Hold Ctrl (Cmd on Mac) to select multiple projects.</p>
         </div>
 
         <div class="flex items-center space-x-4 mt-6">
-            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Update</button>
-            <a href="{{ route('participants.show', $participant->participant_id) }}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded">Cancel</a>
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Update</button>
+            <a href="{{ route('participants.index') }}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded">Cancel</a>
         </div>
     </form>
 </div>
