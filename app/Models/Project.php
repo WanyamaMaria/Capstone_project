@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes; // ✅ import SoftDeletes
 
 class Project extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes; // ✅ add SoftDeletes here
 
     protected $primaryKey = 'project_id';
-    public $incrementing = false;   // since project_id is a string
+    public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -27,19 +28,16 @@ class Project extends Model
         'commercialization_plan',
     ];
 
-    // 👇 Add this relationship
     public function facility()
     {
         return $this->belongsTo(Facility::class, 'facility_id', 'facility_id');
     }
 
-    // Also add program relationship if needed
     public function program()
     {
         return $this->belongsTo(Program::class, 'program_id', 'program_id');
     }
 
-    // Projects have many participants via the pivot table
     public function participants()
     {
         return $this->belongsToMany(Participant::class, 'project_participants', 'project_id', 'participant_id');
